@@ -234,13 +234,13 @@ export function TabletGalleryAppV4() {
         
         {/* VIEW: GALLERY (SINGLE ITEM) */}
         {view === 'gallery' && (
-          <motion.div 
+          <motion.div
             key="gallery"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="relative w-full h-full flex items-center justify-center bg-black"
-            onClick={handleNext} // Click anywhere to advance
+            onClick={currentItem.type === 'image' ? handleNext : undefined}
           >
             <motion.div 
               key={currentItem.id}
