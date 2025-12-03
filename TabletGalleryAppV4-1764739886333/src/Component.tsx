@@ -133,7 +133,8 @@ const KeyboardKey = ({ label, width = 1, onClick }: { label?: string, width?: nu
 const VideoPlayer = ({ src, poster }: { src: string, poster?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const handleVideoClick = () => {
+  const handleVideoClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Verhindert, dass Klick zur Gallery weitergeleitet wird
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
