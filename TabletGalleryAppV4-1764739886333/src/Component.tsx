@@ -102,10 +102,11 @@ const NEW_ITEMS: GalleryItem[] = [
   ANLEITUNG KONTAKTE:
   Hier können die Empfänger bearbeitet werden.
   Für eigene Bilder bei Personen: 'image' URL ändern.
+  Platziere Profilbilder in: public/images/profiles/
 */
 const CONTACTS = [
-  { id: 'c1', name: 'Lena Odenthal', role: 'Hauptkommissarin', type: 'person', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80' },
-  { id: 'c2', name: 'Nico Langenkamp', role: 'Kriminaltechniker', type: 'person', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' },
+  { id: 'c1', name: 'Lena Odenthal', role: 'Hauptkommissarin', type: 'person', image: './images/profiles/person1.jpg' },
+  { id: 'c2', name: 'Nico Langenkamp', role: 'Kriminaltechniker', type: 'person', image: './images/profiles/person2.jpg' },
   { id: 'c3', name: 'Messenger', role: 'App', type: 'app', icon: MessageCircle, color: 'bg-green-600' },
   { id: 'c4', name: 'E-Mail', role: 'Senden', type: 'app', icon: Mail, color: 'bg-blue-600' },
   { id: 'c5', name: 'Weitere Kontakte', role: 'Auswählen', type: 'app', icon: MoreHorizontal, color: 'bg-stone-600' }
@@ -131,24 +132,34 @@ const KeyboardKey = ({ label, width = 1, onClick }: { label?: string, width?: nu
 
 const VideoPlayer = ({ src, poster }: { src: string, poster?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  
-  useEffect(() => {
+
+  const handleVideoClick = () => {
     if (videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Autoplay blocked", e));
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
     }
-  }, []);
+  };
 
   return (
-    <div className="relative w-full h-full bg-black">
+    <div className="relative w-full h-full bg-black" onClick={handleVideoClick}>
       <video
         ref={videoRef}
         src={src}
         poster={poster}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain cursor-pointer"
         loop
         muted
         playsInline
       />
+      {/* Play Button Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
+          <Play className="w-16 h-16 text-white" />
+        </div>
+      </div>
     </div>
   );
 };
@@ -202,7 +213,7 @@ export function TabletGalleryAppV4() {
       setView('success');
       setTimeout(() => {
         setView('gallery');
-        setCurrentIndex(0);
+        setCurrentIndex(4); // Spring zu Bild 5 (Index 4)
       }, 2000);
     }, 2000);
   };
