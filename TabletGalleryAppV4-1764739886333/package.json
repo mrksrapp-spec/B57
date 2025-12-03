@@ -2,7 +2,7 @@
   "name": "tablet-gallery-app",
   "version": "1.0.0",
   "description": "Interactive tablet gallery with zoom-to-share workflow",
-  "main": "electron/main.js",
+  "main": "electron/main.cjs",
   "author": "Your Name",
   "dependencies": {
     "react": "^18.2.0",
