@@ -51,6 +51,16 @@
     "files": [
       "dist/**/*",
       "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/images",
+        "to": "images",
+        "filter": ["**/*"]
+      }
+    ],
+    "asarUnpack": [
+      "dist/images/**/*"
     ]
   }
 }
