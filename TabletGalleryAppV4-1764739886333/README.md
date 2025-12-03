@@ -2,6 +2,13 @@
 
 Finale Version für Filmsets mit optimiertem Magic-Keyboard und Kontakt-Liste.
 
+**🎉 NEU: Jetzt als native Windows Tablet App verfügbar!**
+
+## Plattformen
+
+- 🌐 **Web-Version**: Läuft im Browser
+- 💻 **Windows Tablet App**: Native Electron-App für Windows Tablets
+
 ## Änderungen in V4
 
 - **Cursor Fix**: Der Cursor befindet sich jetzt immer korrekt hinter dem letzten Buchstaben, da das Rendering von `textarea` auf ein dynamisches `div` umgestellt wurde.
@@ -15,6 +22,24 @@ Finale Version für Filmsets mit optimiertem Magic-Keyboard und Kontakt-Liste.
 - **Magic Keyboard**: Automatisches Tippen des Zieltextes ("Wir sollten mit Fiona Markovic sprechen. Dringend!!!").
 - **Video Autoplay**: Startet sofort.
 - **Loop**: Galerie beginnt von vorne nach dem Teilen.
+- **Touch-Optimiert**: Perfekt für Tablets und Touch-Displays.
+- **Vollbildmodus**: F11 für immersives Erlebnis.
+
+## Quick Start
+
+### Web-Version
+```bash
+npm install
+npm run dev
+```
+
+### Windows Tablet App
+```bash
+npm install
+npm run electron:dev
+```
+
+Für detaillierte Build-Anweisungen siehe [WINDOWS_BUILD.md](WINDOWS_BUILD.md)
 
 ## Usage
 
@@ -25,3 +50,12 @@ function SetApp() {
   return <TabletGalleryAppV4 />;
 }
 ```
+
+## Windows App Features
+
+- ✅ Native Windows-Anwendung
+- ✅ Touch-optimiert für Tablets
+- ✅ Vollbildmodus mit F11
+- ✅ Kein Browser nötig
+- ✅ Installierbare .exe oder portable Version
+- ✅ Offline nutzbar

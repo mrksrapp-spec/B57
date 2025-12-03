@@ -2,6 +2,8 @@
   "name": "tablet-gallery-app",
   "version": "1.0.0",
   "description": "Interactive tablet gallery with zoom-to-share workflow",
+  "main": "electron/main.js",
+  "author": "Your Name",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -14,7 +16,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:win": "npm run build && electron-builder --win"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
@@ -24,6 +29,28 @@
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.15",
     "typescript": "~5.6.2",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.tablet-gallery.app",
+    "productName": "Tablet Gallery App",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ]
   }
 }
