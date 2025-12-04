@@ -531,8 +531,8 @@ export function TabletGalleryAppV4() {
 
                     {/* NEW: Message Box with Preview */}
                     <div className="flex-1 flex flex-col items-center justify-center gap-6">
-                        {/* Preview Image - Made Larger */}
-                        <div className="w-56 h-56 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl">
+                        {/* Preview Image - Made Even Larger */}
+                        <div className="w-72 h-72 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl">
                             <img
                                 src={ZOOM_IMAGE}
                                 alt="Preview"
@@ -540,13 +540,13 @@ export function TabletGalleryAppV4() {
                             />
                         </div>
 
-                        {/* Message Input Box - Made Smaller */}
-                        <div className="w-full max-w-2xl bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-4 min-h-[120px] flex items-center justify-center">
-                            <div className="w-full text-lg text-white font-light leading-relaxed break-words text-center">
+                        {/* Message Input Box - Made Even Smaller */}
+                        <div className="w-full max-w-2xl bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-3 min-h-[100px] flex items-center justify-center">
+                            <div className="w-full text-base text-white font-light leading-relaxed break-words text-center">
                                {typedText}
                                {typedText.length < TARGET_MESSAGE.length && (
                                    <motion.span
-                                       className="inline-block w-0.5 h-6 bg-orange-500 align-middle ml-1"
+                                       className="inline-block w-0.5 h-5 bg-orange-500 align-middle ml-1"
                                        animate={{ opacity: [1, 0] }}
                                        transition={{ repeat: Infinity, duration: 0.8 }}
                                    />
