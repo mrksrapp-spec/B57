@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Maximize2,
-  Share2,
-  X,
-  Mail,
-  MessageCircle,
+import { 
+  Maximize2, 
+  Share2, 
+  X, 
+  Mail, 
+  MessageCircle, 
   CheckCircle2,
   ChevronRight,
-  ChevronLeft,
   Play,
-  MoreHorizontal,
-  Edit3,
-  Trash2
+  Send,
+  User,
+  ChevronLeft,
+  MoreHorizontal
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -36,96 +36,77 @@ interface GalleryItem {
 type ViewState = 'gallery' | 'zoom' | 'share-select' | 'keyboard' | 'sending' | 'success';
 
 // --- Data ---
-
-const ZOOM_IMAGE = './images/zoom.jpeg';
-
+/* 
+  ANLEITUNG EIGENE BILDER:
+  Um eigene Bilder zu verwenden, ersetze einfach die 'src' URLs unten in INITIAL_ITEMS.
+  Du kannst URLs von Unsplash nutzen oder direkte Links zu deinen Bildern.
+  
+  Beispiel:
+  {
+    id: 'item-1',
+    type: 'image',
+    src: 'https://mein-server.de/mein-bild.jpg', // <--- Hier URL ändern
+    title: 'Mein Bild'
+  }
+*/
 const INITIAL_ITEMS: GalleryItem[] = [
   {
     id: 'item-1',
     type: 'video',
-    src: './images/video1.mp4',
-    title: 'Video'
-  },
-  {
-    id: 'item-neu1',
-    type: 'image',
-    src: './images/neu1.jpeg',
-    title: 'Zusatzbild 1'
-  },
-  {
-    id: 'item-neu2',
-    type: 'image',
-    src: './images/neu2.jpeg',
-    title: 'Zusatzbild 2'
-  },
-  {
-    id: 'item-neu3',
-    type: 'image',
-    src: './images/neu3.jpeg',
-    title: 'Zusatzbild 3'
-  },
-  {
-    id: 'item-neu4',
-    type: 'image',
-    src: './images/neu4.jpeg',
-    title: 'Zusatzbild 4'
-  },
-  {
-    id: 'item-neu5',
-    type: 'image',
-    src: './images/neu5.jpeg',
-    title: 'Zusatzbild 5'
-  },
-  {
-    id: 'item-neu6',
-    type: 'image',
-    src: './images/neu6.jpeg',
-    title: 'Zusatzbild 6'
+    src: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4',
+    thumbnail: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1600&q=80',
+    title: 'Hinter den Kulissen'
   },
   {
     id: 'item-2',
     type: 'image',
-    src: './images/1.jpeg',
-    title: 'Bild 1'
+    src: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1600&q=80',
+    title: 'Drehortsuche'
   },
   {
     id: 'item-3',
     type: 'image',
-    src: './images/2.jpg',
-    title: 'Bild 2'
+    src: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1600&q=80',
+    title: 'Charakterstudie'
   },
   {
     id: 'item-4',
     type: 'image',
-    src: './images/3.jpg',
-    title: 'Bild 3'
+    src: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1600&q=80',
+    title: 'Kameraarbeit'
   },
   {
     id: 'item-5',
     type: 'image',
-    src: './images/4.jpeg',
-    title: 'Bild 4'
-  },
+    src: 'https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=1600&q=80',
+    title: 'Hauptaufnahme'
+  }
 ];
 
 const NEW_ITEMS: GalleryItem[] = [
   {
-    id: 'item-12',
+    id: 'item-6',
     type: 'image',
-    src: './images/5.jpeg',
-    title: 'Bild 5'
+    src: 'https://images.unsplash.com/photo-1550100136-e07210172684?auto=format&fit=crop&w=1600&q=80',
+    title: 'Exklusiver Inhalt 1'
   },
   {
-    id: 'item-13',
+    id: 'item-7',
     type: 'image',
-    src: './images/6.jpeg',
-    title: 'Bild 6'
+    src: 'https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=1600&q=80',
+    title: 'Exklusiver Inhalt 2'
   }
 ];
 
+/*
+  ANLEITUNG KONTAKTE:
+  Hier können die Empfänger bearbeitet werden.
+  Für eigene Bilder bei Personen: 'image' URL ändern.
+  Platziere Profilbilder in: public/images/profiles/
+*/
 const CONTACTS = [
-  { id: 'c1', name: 'Lena Odenthal', role: '', type: 'person', image: './images/profiles/person1.png' },
-  { id: 'c2', name: 'Nico Langenkamp', role: '', type: 'person', image: './images/profiles/person2.png' },
+  { id: 'c1', name: 'Lena Odenthal', role: 'Hauptkommissarin', type: 'person', image: './images/profiles/person1.jpg' },
+  { id: 'c2', name: 'Nico Langenkamp', role: 'Kriminaltechniker', type: 'person', image: './images/profiles/person2.jpg' },
   { id: 'c3', name: 'Messenger', role: 'App', type: 'app', icon: MessageCircle, color: 'bg-green-600' },
   { id: 'c4', name: 'E-Mail', role: 'Senden', type: 'app', icon: Mail, color: 'bg-blue-600' },
   { id: 'c5', name: 'Weitere Kontakte', role: 'Auswählen', type: 'app', icon: MoreHorizontal, color: 'bg-stone-600' }
@@ -136,10 +117,11 @@ const TARGET_MESSAGE = "Wir sollten mit Fiona Markovic sprechen. Dringend!!!";
 // --- Components ---
 
 const KeyboardKey = ({ label, width = 1, onClick }: { label?: string, width?: number, onClick: () => void }) => (
-  <button
+  <button 
     onClick={onClick}
     className={cn(
       "h-12 rounded bg-stone-700/50 flex items-center justify-center text-white/90 font-medium shadow-sm text-lg select-none touch-none",
+      // Removed all hover/active/focus states to prevent highlighting
       "outline-none ring-0"
     )}
     style={{ flex: width }}
@@ -148,33 +130,11 @@ const KeyboardKey = ({ label, width = 1, onClick }: { label?: string, width?: nu
   </button>
 );
 
-const VideoPlayer = ({ src, poster, onNext }: { src: string, poster?: string, onNext: () => void }) => {
+const VideoPlayer = ({ src, poster }: { src: string, poster?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => setIsPlaying(false);
-
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('ended', handleEnded);
-
-    video.load();
-
-    return () => {
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-      video.removeEventListener('ended', handleEnded);
-    };
-  }, [src]);
 
   const handleVideoClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Verhindert, dass Klick zur Gallery weitergeleitet wird
     if (videoRef.current) {
       if (videoRef.current.paused) {
         videoRef.current.play();
@@ -195,25 +155,12 @@ const VideoPlayer = ({ src, poster, onNext }: { src: string, poster?: string, on
         muted
         playsInline
       />
-      {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
-            <Play className="w-16 h-16 text-white" />
-          </div>
+      {/* Play Button Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
+          <Play className="w-16 h-16 text-white" />
         </div>
-      )}
-
-      {isPlaying && (
-        <button
-            onClick={(e) => {
-                e.stopPropagation();
-                onNext();
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-4 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/90 transition-all z-20 hover:scale-110"
-        >
-            <ChevronRight className="w-8 h-8" />
-        </button>
-      )}
+      </div>
     </div>
   );
 };
@@ -225,19 +172,10 @@ export function TabletGalleryAppV4() {
   const [hasShared, setHasShared] = useState(false);
   const [typedText, setTypedText] = useState("");
 
-  useEffect(() => {
-    setItems(INITIAL_ITEMS);
-    setCurrentIndex(0);
-  }, [JSON.stringify(INITIAL_ITEMS)]);
-
   const currentItem = items[currentIndex];
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
   };
 
   const handleZoomEnter = () => {
@@ -259,6 +197,7 @@ export function TabletGalleryAppV4() {
 
   const handleKeyClick = () => {
     if (typedText.length < TARGET_MESSAGE.length) {
+      // Add exactly 1 character at a time
       const chunk = 1;
       const nextLen = Math.min(typedText.length + chunk, TARGET_MESSAGE.length);
       setTypedText(TARGET_MESSAGE.slice(0, nextLen));
@@ -266,8 +205,6 @@ export function TabletGalleryAppV4() {
   };
 
   const handleSend = () => {
-    const startNextIndex = INITIAL_ITEMS.length;
-
     setView('sending');
     setTimeout(() => {
       if (!hasShared) {
@@ -277,23 +214,25 @@ export function TabletGalleryAppV4() {
       setView('success');
       setTimeout(() => {
         setView('gallery');
-        setCurrentIndex(startNextIndex);
+        setCurrentIndex(4); // Spring zu Bild 5 (Index 4)
       }, 2000);
     }, 2000);
   };
 
+  // Keyboard Layout
   const keysRow1 = ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P'];
   const keysRow2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
   const keysRow3 = ['Y', 'X', 'C', 'V', 'B', 'N', 'M'];
 
   return (
     <div className="w-full h-screen bg-stone-950 text-white overflow-hidden font-sans select-none relative">
-       <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+       {/* Background Texture */}
+       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
            style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }} />
 
       <AnimatePresence mode="wait">
-
-        {/* VIEW: GALLERY */}
+        
+        {/* VIEW: GALLERY (SINGLE ITEM) */}
         {view === 'gallery' && (
           <motion.div
             key="gallery"
@@ -301,8 +240,9 @@ export function TabletGalleryAppV4() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="relative w-full h-full flex items-center justify-center bg-black"
+            onClick={currentItem.type === 'image' ? handleNext : undefined}
           >
-            <motion.div
+            <motion.div 
               key={currentItem.id}
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -311,74 +251,29 @@ export function TabletGalleryAppV4() {
               className="absolute inset-0"
             >
               {currentItem.type === 'video' ? (
-                <VideoPlayer
-                  src={currentItem.src}
-                  poster={currentItem.thumbnail}
-                  onNext={handleNext}
-                />
+                <VideoPlayer src={currentItem.src} poster={currentItem.thumbnail} />
               ) : (
-                <>
-                  <img
-                    src={currentItem.src}
-                    alt={currentItem.title}
-                    className="w-full h-full object-contain"
-                  />
-                  {/* Navigation Arrows for Images */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handlePrev(); }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/90 transition-all z-20 hover:scale-110"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleNext(); }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/90 transition-all z-20 hover:scale-110"
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                </>
+                <img src={currentItem.src} alt={currentItem.title} className="w-full h-full object-contain" />
               )}
             </motion.div>
 
             {/* Controls Overlay */}
             <div className="absolute inset-0 flex flex-col justify-between p-8 pointer-events-none">
+                {/* Header */}
                 <div className="flex justify-between items-start">
                     <div className="bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                        <span className="text-sm font-medium uppercase tracking-widest text-white/80">
-                          Galerie
-                        </span>
+                        <span className="text-sm font-medium uppercase tracking-widest text-white/80">Galerie</span>
                     </div>
                 </div>
 
-                {/* NEW: Button Bar */}
-                <div className="pt-20 pb-4 px-4 flex justify-end items-end gap-2">
-                    <button
-                        onClick={(e) => { e.stopPropagation(); handleShareStart(); }}
-                        className="pointer-events-auto bg-orange-500/90 hover:bg-orange-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
-                        title="Teilen"
-                    >
-                        <Share2 className="w-5 h-5" />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); }}
-                        className="pointer-events-auto bg-blue-500/90 hover:bg-blue-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
-                        title="Bearbeiten"
-                    >
-                        <Edit3 className="w-5 h-5" />
-                    </button>
-                    <button
+                {/* Footer - Zoom Button */}
+                <div className="pt-20 pb-4 px-4 flex justify-end items-end">
+                    <button 
                         onClick={(e) => { e.stopPropagation(); handleZoomEnter(); }}
-                        className="pointer-events-auto bg-purple-500/90 hover:bg-purple-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
-                        title="Zoom"
+                        className="pointer-events-auto bg-orange-500 hover:bg-orange-400 text-white p-4 rounded-full shadow-lg shadow-orange-500/20 transition-transform hover:scale-110 flex items-center gap-2"
                     >
-                        <Maximize2 className="w-5 h-5" />
-                    </button>
-                    <button
-                        onClick={(e) => { e.stopPropagation(); }}
-                        className="pointer-events-auto bg-red-500/90 hover:bg-red-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
-                        title="Löschen"
-                    >
-                        <Trash2 className="w-5 h-5" />
+                        <Maximize2 className="w-6 h-6" />
+                        <span className="font-medium pr-2">Zoom</span>
                     </button>
                 </div>
             </div>
@@ -387,44 +282,39 @@ export function TabletGalleryAppV4() {
 
         {/* VIEW: ZOOM */}
         {view === 'zoom' && (
-          <motion.div
+          <motion.div 
             key="zoom"
             className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <button
+            <button 
               onClick={handleZoomClose}
-              className="absolute top-8 right-8 z-50 p-3 rounded-full bg-black/40 hover:bg-white/20 text-white transition-colors border border-white/10"
+              className="absolute top-8 right-8 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
             >
               <X className="w-8 h-8" />
             </button>
 
-            <div
-                className="w-full h-full relative overflow-hidden flex items-center justify-center bg-black"
-                onClick={handleZoomClose}
-            >
-                <motion.img
-                    src={ZOOM_IMAGE}
-                    alt="Detail Zoom"
-                    className="w-full h-full object-contain cursor-pointer"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
+            <div className="w-full h-full relative overflow-hidden flex items-center justify-center">
+                <motion.img 
+                    src={currentItem.src}
+                    alt={currentItem.title}
+                    className="max-w-[150%] max-h-[150%] object-cover cursor-move"
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.2 }}
+                    drag
+                    dragConstraints={{ left: -200, right: 200, top: -200, bottom: 200 }}
                 />
-
-                <motion.div
+                
+                <motion.div 
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="absolute bottom-12 pointer-events-none"
+                    className="absolute bottom-12"
                 >
-                    <button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleShareStart();
-                        }}
-                        className="pointer-events-auto bg-orange-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-orange-500/30 hover:bg-orange-400 transition-all hover:scale-105 flex items-center gap-3"
+                    <button 
+                        onClick={handleShareStart}
+                        className="bg-orange-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-orange-500/30 hover:bg-orange-400 transition-all hover:scale-105 flex items-center gap-3"
                     >
                         <Share2 className="w-6 h-6" />
                         Teilen
@@ -436,7 +326,7 @@ export function TabletGalleryAppV4() {
 
         {/* VIEW: SHARE SELECT */}
         {view === 'share-select' && (
-          <motion.div
+          <motion.div 
             key="share-select"
             className="fixed inset-0 z-50 flex flex-col bg-stone-900"
             initial={{ y: '100%' }}
@@ -451,6 +341,7 @@ export function TabletGalleryAppV4() {
                  <h2 className="ml-4 text-xl font-light text-white">Empfänger wählen</h2>
              </div>
 
+            {/* Modified: Flex Column Vertical Stack */}
             <div className="flex-1 p-8 flex flex-col gap-4 max-w-md mx-auto w-full justify-center overflow-y-auto">
               {CONTACTS.map((contact, idx) => (
                 <motion.button
@@ -482,7 +373,7 @@ export function TabletGalleryAppV4() {
           </motion.div>
         )}
 
-        {/* VIEW: KEYBOARD - NEW DESIGN */}
+        {/* VIEW: KEYBOARD (MAGIC TYPING) */}
         {view === 'keyboard' && (
             <motion.div
                 key="keyboard"
@@ -491,12 +382,12 @@ export function TabletGalleryAppV4() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
+                {/* Message Preview Area */}
                 <div className="flex-1 p-8 flex flex-col max-w-3xl mx-auto w-full">
-                    {/* Header */}
                     <div className="flex justify-between items-center mb-8">
                         <button onClick={() => setView('share-select')} className="text-white/60 hover:text-white">Abbrechen</button>
                         <span className="text-white/40">Neue Nachricht</span>
-                        <button
+                        <button 
                             onClick={handleSend}
                             disabled={typedText.length === 0}
                             className={cn(
@@ -507,38 +398,26 @@ export function TabletGalleryAppV4() {
                             Senden
                         </button>
                     </div>
-
-                    {/* NEW: Message Box with Preview */}
-                    <div className="flex-1 flex flex-col items-center justify-center gap-6">
-                        {/* Preview Image */}
-                        <div className="w-32 h-32 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl">
-                            <img
-                                src={ZOOM_IMAGE}
-                                alt="Preview"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-
-                        {/* Message Input Box */}
-                        <div className="w-full max-w-2xl bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-6 min-h-[200px] flex items-center justify-center">
-                            <div className="w-full text-2xl text-white font-light leading-relaxed break-words text-center">
-                               {typedText}
-                               {typedText.length < TARGET_MESSAGE.length && (
-                                   <motion.span
-                                       className="inline-block w-0.5 h-7 bg-orange-500 align-middle ml-1"
-                                       animate={{ opacity: [1, 0] }}
-                                       transition={{ repeat: Infinity, duration: 0.8 }}
-                                   />
-                               )}
-                            </div>
+                    
+                    <div className="flex-1 flex items-center justify-center">
+                        {/* FIXED CURSOR IMPLEMENTATION */}
+                        <div className="w-full text-3xl text-white font-light text-center leading-tight break-words">
+                           {typedText}
+                           {typedText.length < TARGET_MESSAGE.length && (
+                               <motion.span 
+                                   className="inline-block w-0.5 h-8 bg-orange-500 align-middle ml-1"
+                                   animate={{ opacity: [1, 0] }}
+                                   transition={{ repeat: Infinity, duration: 0.8 }}
+                               />
+                           )}
                         </div>
                     </div>
                 </div>
 
-                {/* Keyboard */}
-                <div
+                {/* Virtual Keyboard */}
+                <div 
                     className="bg-stone-900 p-4 pb-8 pt-6 rounded-t-3xl shadow-2xl border-t border-white/10 select-none"
-                    onClick={handleKeyClick}
+                    onClick={handleKeyClick} // MAGIC: Click anywhere on keyboard triggers typing
                 >
                     <div className="flex flex-col gap-3 max-w-3xl mx-auto">
                         <div className="flex gap-2 justify-center">
@@ -548,9 +427,9 @@ export function TabletGalleryAppV4() {
                             {keysRow2.map(k => <KeyboardKey key={k} label={k} onClick={() => {}} />)}
                         </div>
                         <div className="flex gap-2 justify-center px-12">
-                            <KeyboardKey width={1.5} onClick={() => {}} />
+                            <KeyboardKey width={1.5} onClick={() => {}} /> {/* Shift */}
                             {keysRow3.map(k => <KeyboardKey key={k} label={k} onClick={() => {}} />)}
-                            <KeyboardKey width={1.5} onClick={() => {}} />
+                            <KeyboardKey width={1.5} onClick={() => {}} /> {/* Backspace */}
                         </div>
                         <div className="flex gap-2 justify-center mt-2">
                             <KeyboardKey label="123" width={1.5} onClick={() => {}} />
@@ -564,7 +443,7 @@ export function TabletGalleryAppV4() {
 
         {/* VIEW: SENDING & SUCCESS */}
         {(view === 'sending' || view === 'success') && (
-          <motion.div
+          <motion.div 
             key="status"
             className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur"
             initial={{ opacity: 0 }}
@@ -573,13 +452,13 @@ export function TabletGalleryAppV4() {
           >
              <div className="relative w-32 h-32 flex items-center justify-center mb-8">
                 {view === 'sending' ? (
-                    <motion.div
+                    <motion.div 
                         className="w-20 h-20 border-4 border-white/20 border-t-orange-500 rounded-full"
                         animate={{ rotate: 360 }}
                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     />
                 ) : (
-                    <motion.div
+                    <motion.div 
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center"
