@@ -540,8 +540,8 @@ export function TabletGalleryAppV4() {
                             />
                         </div>
 
-                        {/* Message Input Box - Made Even Smaller */}
-                        <div className="w-full max-w-2xl bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-3 min-h-[100px] flex items-center justify-center">
+                        {/* Message Input Box - Made Even Smaller and Narrower */}
+                        <div className="w-full max-w-md bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-3 min-h-[100px] flex items-center justify-center">
                             <div className="w-full text-base text-white font-light leading-relaxed break-words text-center">
                                {typedText}
                                {typedText.length < TARGET_MESSAGE.length && (
