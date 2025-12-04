@@ -15,7 +15,7 @@ export default defineConfig({
         description: 'Tablet Gallery App für Filmsets - Bilder teilen und bearbeiten',
         theme_color: '#f97316',
         background_color: '#0c0a09',
-        display: 'standalone',
+        display: 'fullscreen',
         orientation: 'landscape',
         start_url: '/',
         icons: [
