@@ -426,29 +426,29 @@ export function TabletGalleryAppV4() {
                 />
 
                 <motion.div
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="absolute bottom-12 pointer-events-none flex gap-4"
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="absolute right-8 bottom-0 top-0 flex flex-col items-end justify-center gap-4 pointer-events-none"
                 >
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             handleZoomClose();
                         }}
-                        className="pointer-events-auto bg-purple-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-purple-500/30 hover:bg-purple-400 transition-all hover:scale-105 flex items-center gap-3"
+                        className="pointer-events-auto bg-purple-500/90 hover:bg-purple-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Zoom"
                     >
-                        <Maximize2 className="w-6 h-6" />
-                        Zoom
+                        <Maximize2 className="w-5 h-5" />
                     </button>
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
                             handleShareStart();
                         }}
-                        className="pointer-events-auto bg-orange-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-orange-500/30 hover:bg-orange-400 transition-all hover:scale-105 flex items-center gap-3"
+                        className="pointer-events-auto bg-orange-500/90 hover:bg-orange-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Teilen"
                     >
-                        <Share2 className="w-6 h-6" />
-                        Teilen
+                        <Share2 className="w-5 h-5" />
                     </button>
                 </motion.div>
             </div>
