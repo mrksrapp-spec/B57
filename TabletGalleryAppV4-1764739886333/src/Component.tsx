@@ -159,10 +159,26 @@ export function TabletGalleryAppV4() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hasShared, setHasShared] = useState(false);
   const [typedText, setTypedText] = useState("");
+  const [fullscreenAttempted, setFullscreenAttempted] = useState(false);
 
   const currentItem = items[currentIndex];
 
+  // Request fullscreen on first user interaction
+  const requestFullscreen = async () => {
+    if (!fullscreenAttempted && document.documentElement.requestFullscreen) {
+      try {
+        await document.documentElement.requestFullscreen();
+        setFullscreenAttempted(true);
+      } catch (err) {
+        // Fullscreen request failed - app continues to work normally
+        console.log('Fullscreen not available:', err);
+        setFullscreenAttempted(true);
+      }
+    }
+  };
+
   const handleNext = () => {
+    requestFullscreen(); // Try fullscreen on first tap
     setCurrentIndex((prev) => (prev + 1) % items.length);
   };
 
