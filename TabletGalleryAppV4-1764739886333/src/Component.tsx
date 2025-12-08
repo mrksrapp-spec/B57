@@ -36,76 +36,96 @@ interface GalleryItem {
 type ViewState = 'gallery' | 'zoom' | 'share-select' | 'keyboard' | 'sending' | 'success';
 
 // --- Data ---
-/* 
-  ANLEITUNG EIGENE BILDER:
-  Um eigene Bilder zu verwenden, ersetze einfach die 'src' URLs unten in INITIAL_ITEMS.
-  Du kannst URLs von Unsplash nutzen oder direkte Links zu deinen Bildern.
-  
-  Beispiel:
-  {
-    id: 'item-1',
-    type: 'image',
-    src: 'https://mein-server.de/mein-bild.jpg', // <--- Hier URL ändern
-    title: 'Mein Bild'
-  }
-*/
+
+const ZOOM_IMAGE = './images/zoom.jpeg';
+
 const INITIAL_ITEMS: GalleryItem[] = [
   {
     id: 'item-1',
     type: 'video',
-    src: 'https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1600&q=80',
-    title: 'Hinter den Kulissen'
+    src: './images/video1.mp4',
+    title: 'Video'
+  },
+  {
+    id: 'item-neu1',
+    type: 'image',
+    src: './images/neu1.jpeg',
+    title: 'Zusatzbild 1'
+  },
+  {
+    id: 'item-neu2',
+    type: 'image',
+    src: './images/neu2.jpeg',
+    title: 'Zusatzbild 2'
+  },
+  {
+    id: 'item-neu3',
+    type: 'image',
+    src: './images/neu3.jpeg',
+    title: 'Zusatzbild 3'
+  },
+  {
+    id: 'item-neu4',
+    type: 'image',
+    src: './images/neu4.jpeg',
+    title: 'Zusatzbild 4'
+  },
+  {
+    id: 'item-neu5',
+    type: 'image',
+    src: './images/neu5.jpeg',
+    title: 'Zusatzbild 5'
+  },
+  {
+    id: 'item-neu6',
+    type: 'image',
+    src: './images/neu6.jpeg',
+    title: 'Zusatzbild 6'
   },
   {
     id: 'item-2',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1600&q=80',
-    title: 'Drehortsuche'
+    src: './images/1.jpeg',
+    title: 'Bild 1'
   },
   {
     id: 'item-3',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1600&q=80',
-    title: 'Charakterstudie'
+    src: './images/2.jpg',
+    title: 'Bild 2'
   },
   {
     id: 'item-4',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1600&q=80',
-    title: 'Kameraarbeit'
+    src: './images/3.jpg',
+    title: 'Bild 3'
   },
   {
     id: 'item-5',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1542206395-9feb3edaa68d?auto=format&fit=crop&w=1600&q=80',
-    title: 'Hauptaufnahme'
-  }
+    src: './images/4.jpeg',
+    title: 'Bild 4'
+  },
 ];
 
 const NEW_ITEMS: GalleryItem[] = [
   {
-    id: 'item-6',
+    id: 'item-12',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1550100136-e07210172684?auto=format&fit=crop&w=1600&q=80',
-    title: 'Exklusiver Inhalt 1'
+    src: './images/5.jpeg',
+    title: 'Bild 5'
   },
   {
-    id: 'item-7',
+    id: 'item-13',
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=1600&q=80',
-    title: 'Exklusiver Inhalt 2'
+    src: './images/6.jpeg',
+    title: 'Bild 6'
   }
 ];
 
-/*
-  ANLEITUNG KONTAKTE:
-  Hier können die Empfänger bearbeitet werden.
-  Für eigene Bilder bei Personen: 'image' URL ändern.
-*/
 const CONTACTS = [
-  { id: 'c1', name: 'Lena Odenthal', role: 'Hauptkommissarin', type: 'person', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80' },
-  { id: 'c2', name: 'Nico Langenkamp', role: 'Kriminaltechniker', type: 'person', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80' },
+  { id: 'c1', name: 'Lena Odenthal', role: '', type: 'person', image: './images/profiles/person1.png' },
+  { id: 'c2', name: 'Nico Langenkamp', role: '', type: 'person', image: './images/profiles/person2.png' },
   { id: 'c3', name: 'Messenger', role: 'App', type: 'app', icon: MessageCircle, color: 'bg-green-600' },
   { id: 'c4', name: 'E-Mail', role: 'Senden', type: 'app', icon: Mail, color: 'bg-blue-600' },
   { id: 'c5', name: 'Weitere Kontakte', role: 'Auswählen', type: 'app', icon: MoreHorizontal, color: 'bg-stone-600' }
@@ -129,26 +149,60 @@ const KeyboardKey = ({ label, width = 1, onClick }: { label?: string, width?: nu
   </button>
 );
 
-const VideoPlayer = ({ src, poster }: { src: string, poster?: string }) => {
+const VideoPlayer = ({ src, poster, onNext, onPrev }: { src: string, poster?: string, onNext: () => void, onPrev: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    video.load();
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, [src]);
+
+  const handleVideoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Autoplay blocked", e));
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
     }
-  }, []);
+  };
 
   return (
-    <div className="relative w-full h-full bg-black">
+    <div className="relative w-full h-full bg-black" onClick={handleVideoClick}>
       <video
         ref={videoRef}
         src={src}
         poster={poster}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain cursor-pointer"
         loop
         muted
         playsInline
       />
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
+            <Play className="w-16 h-16 text-white" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -160,6 +214,11 @@ export function TabletGalleryAppV4() {
   const [hasShared, setHasShared] = useState(false);
   const [typedText, setTypedText] = useState("");
   const [fullscreenAttempted, setFullscreenAttempted] = useState(false);
+
+  useEffect(() => {
+    setItems(INITIAL_ITEMS);
+    setCurrentIndex(0);
+  }, [JSON.stringify(INITIAL_ITEMS)]);
 
   const currentItem = items[currentIndex];
 
@@ -180,6 +239,10 @@ export function TabletGalleryAppV4() {
   const handleNext = () => {
     requestFullscreen(); // Try fullscreen on first tap
     setCurrentIndex((prev) => (prev + 1) % items.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
   };
 
   const handleZoomEnter = () => {
@@ -255,7 +318,7 @@ export function TabletGalleryAppV4() {
               className="absolute inset-0"
             >
               {currentItem.type === 'video' ? (
-                <VideoPlayer src={currentItem.src} poster={currentItem.thumbnail} />
+                <VideoPlayer src={currentItem.src} poster={currentItem.thumbnail} onNext={handleNext} onPrev={handlePrev} />
               ) : (
                 <img src={currentItem.src} alt={currentItem.title} className="w-full h-full object-contain" />
               )}
