@@ -178,6 +178,7 @@ const VideoPlayer = ({ src, poster, onNext, onPrev }: { src: string, poster?: st
     e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
+        videoRef.current.muted = false; // Enable sound when user plays
         videoRef.current.play();
       } else {
         videoRef.current.pause();
@@ -192,14 +193,13 @@ const VideoPlayer = ({ src, poster, onNext, onPrev }: { src: string, poster?: st
         src={src}
         poster={poster}
         className="w-full h-full object-contain cursor-pointer"
-        loop
         muted
         playsInline
       />
       {!isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
-            <Play className="w-16 h-16 text-white" />
+            <Play className="w-16 h-16 text-white" style={{ paddingLeft: '4px' }} />
           </div>
         </div>
       )}
