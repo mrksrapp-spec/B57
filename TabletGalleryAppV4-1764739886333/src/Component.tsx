@@ -175,14 +175,14 @@ const VideoPlayer = ({ src, poster, onNext, onPrev }: { src: string, poster?: st
   }, [src]);
 
   const handleVideoClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
+        // Video is paused - start playing and prevent click from advancing to next item
+        e.stopPropagation();
         videoRef.current.muted = false; // Enable sound when user plays
         videoRef.current.play();
-      } else {
-        videoRef.current.pause();
       }
+      // If video is playing, let the click bubble up to advance to next item
     }
   };
 
