@@ -174,35 +174,43 @@ const VideoPlayer = ({ src, poster, onNext, onPrev }: { src: string, poster?: st
     };
   }, [src]);
 
-  const handleVideoClick = (e: React.MouseEvent) => {
+  const handleVideoClick = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        // Video is paused - start playing and prevent click from advancing to next item
-        e.stopPropagation();
         videoRef.current.muted = false; // Enable sound when user plays
         videoRef.current.play();
+      } else {
+        videoRef.current.pause();
       }
-      // If video is playing, let the click bubble up to advance to next item
     }
   };
 
   return (
-    <div className="relative w-full h-full bg-black" onClick={handleVideoClick}>
+    <div className="relative w-full h-full bg-black">
       <video
         ref={videoRef}
         src={src}
         poster={poster}
-        className="w-full h-full object-contain cursor-pointer"
+        className="w-full h-full object-contain"
         muted
         playsInline
       />
-      {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
-            <Play className="w-16 h-16 text-white" style={{ paddingLeft: '4px' }} />
-          </div>
+      {/* Play/Pause overlay only in center */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="w-64 h-64 flex items-center justify-center cursor-pointer pointer-events-auto"
+          onClick={handleVideoClick}
+        >
+          {!isPlaying && (
+            <div className="bg-black/50 backdrop-blur-sm rounded-full p-6">
+              <Play className="w-16 h-16 text-white" style={{ paddingLeft: '4px' }} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -242,6 +250,7 @@ export function TabletGalleryAppV4() {
   };
 
   const handlePrev = () => {
+    requestFullscreen(); // Try fullscreen on first tap
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
   };
 
@@ -301,15 +310,14 @@ export function TabletGalleryAppV4() {
         
         {/* VIEW: GALLERY (SINGLE ITEM) */}
         {view === 'gallery' && (
-          <motion.div 
+          <motion.div
             key="gallery"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="relative w-full h-full flex items-center justify-center bg-black"
-            onClick={handleNext} // Click anywhere to advance
           >
-            <motion.div 
+            <motion.div
               key={currentItem.id}
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -323,6 +331,20 @@ export function TabletGalleryAppV4() {
                 <img src={currentItem.src} alt={currentItem.title} className="w-full h-full object-contain" />
               )}
             </motion.div>
+
+            {/* Navigation Arrows - Left and Right */}
+            <button
+              onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/90 transition-all z-20 hover:scale-110"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); handleNext(); }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/90 transition-all z-20 hover:scale-110"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
 
             {/* Controls Overlay */}
             <div className="absolute inset-0 flex flex-col justify-between p-8 pointer-events-none">
