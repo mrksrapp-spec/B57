@@ -371,38 +371,40 @@ export function TabletGalleryAppV4() {
 
         {/* VIEW: ZOOM */}
         {view === 'zoom' && (
-          <motion.div 
+          <motion.div
             key="zoom"
             className="fixed inset-0 z-50 flex items-center justify-center bg-black"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <button 
+            <button
               onClick={handleZoomClose}
-              className="absolute top-8 right-8 z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+              className="absolute top-8 right-8 z-50 p-3 rounded-full bg-black/40 hover:bg-white/20 text-white transition-colors border border-white/10"
             >
               <X className="w-8 h-8" />
             </button>
 
-            <div className="w-full h-full relative overflow-hidden flex items-center justify-center">
-                <motion.img 
-                    src={currentItem.src}
-                    alt={currentItem.title}
-                    className="max-w-[150%] max-h-[150%] object-cover cursor-move"
-                    initial={{ scale: 1 }}
-                    whileHover={{ scale: 1.2 }}
-                    drag
-                    dragConstraints={{ left: -200, right: 200, top: -200, bottom: 200 }}
+            <div
+                className="w-full h-full relative overflow-hidden flex items-center justify-center bg-black"
+                onClick={handleZoomClose}
+            >
+                <motion.img
+                    src={ZOOM_IMAGE}
+                    alt="Detail Zoom"
+                    className="w-full h-full object-contain cursor-pointer"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
                 />
-                
-                <motion.div 
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="absolute bottom-12"
+
+                <motion.div
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="absolute right-8 bottom-12"
                 >
-                    <button 
-                        onClick={handleShareStart}
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleShareStart(); }}
                         className="bg-orange-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-orange-500/30 hover:bg-orange-400 transition-all hover:scale-105 flex items-center gap-3"
                     >
                         <Share2 className="w-6 h-6" />
@@ -462,7 +464,7 @@ export function TabletGalleryAppV4() {
           </motion.div>
         )}
 
-        {/* VIEW: KEYBOARD (MAGIC TYPING) */}
+        {/* VIEW: KEYBOARD */}
         {view === 'keyboard' && (
             <motion.div
                 key="keyboard"
@@ -471,12 +473,12 @@ export function TabletGalleryAppV4() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
-                {/* Message Preview Area */}
                 <div className="flex-1 p-8 flex flex-col max-w-3xl mx-auto w-full">
+                    {/* Header */}
                     <div className="flex justify-between items-center mb-8">
                         <button onClick={() => setView('share-select')} className="text-white/60 hover:text-white">Abbrechen</button>
                         <span className="text-white/40">Neue Nachricht</span>
-                        <button 
+                        <button
                             onClick={handleSend}
                             disabled={typedText.length === 0}
                             className={cn(
@@ -487,18 +489,30 @@ export function TabletGalleryAppV4() {
                             Senden
                         </button>
                     </div>
-                    
-                    <div className="flex-1 flex items-center justify-center">
-                        {/* FIXED CURSOR IMPLEMENTATION */}
-                        <div className="w-full text-3xl text-white font-light text-center leading-tight break-words">
-                           {typedText}
-                           {typedText.length < TARGET_MESSAGE.length && (
-                               <motion.span 
-                                   className="inline-block w-0.5 h-8 bg-orange-500 align-middle ml-1"
-                                   animate={{ opacity: [1, 0] }}
-                                   transition={{ repeat: Infinity, duration: 0.8 }}
-                               />
-                           )}
+
+                    {/* Message Box with Preview */}
+                    <div className="flex-1 flex flex-col items-center justify-center gap-6">
+                        {/* Preview Image */}
+                        <div className="w-72 h-72 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl">
+                            <img
+                                src={ZOOM_IMAGE}
+                                alt="Preview"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
+                        {/* Message Input Box */}
+                        <div className="w-full max-w-md bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-3 min-h-[100px] flex items-center justify-center">
+                            <div className="w-full text-base text-white font-light leading-relaxed break-words text-center">
+                               {typedText}
+                               {typedText.length < TARGET_MESSAGE.length && (
+                                   <motion.span
+                                       className="inline-block w-0.5 h-5 bg-orange-500 align-middle ml-1"
+                                       animate={{ opacity: [1, 0] }}
+                                       transition={{ repeat: Infinity, duration: 0.8 }}
+                                   />
+                               )}
+                            </div>
                         </div>
                     </div>
                 </div>
