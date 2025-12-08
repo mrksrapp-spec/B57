@@ -493,13 +493,11 @@ export function TabletGalleryAppV4() {
                     {/* Message Box with Preview */}
                     <div className="flex-1 flex flex-col items-center justify-center gap-6">
                         {/* Preview Image */}
-                        <div className="w-96 h-72 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl bg-black flex items-center justify-center">
-                            <img
-                                src={ZOOM_IMAGE}
-                                alt="Preview"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
+                        <img
+                            src={ZOOM_IMAGE}
+                            alt="Preview"
+                            className="max-w-md max-h-72 rounded-lg border-2 border-white/10 shadow-xl"
+                        />
 
                         {/* Message Input Box */}
                         <div className="w-full max-w-md bg-stone-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-3 min-h-[100px] flex items-center justify-center">
