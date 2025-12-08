@@ -1,18 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Maximize2, 
-  Share2, 
-  X, 
-  Mail, 
-  MessageCircle, 
+import {
+  Maximize2,
+  Share2,
+  X,
+  Mail,
+  MessageCircle,
   CheckCircle2,
   ChevronRight,
   Play,
   Send,
   User,
   ChevronLeft,
-  MoreHorizontal
+  MoreHorizontal,
+  Edit3,
+  Trash2
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -355,14 +357,28 @@ export function TabletGalleryAppV4() {
                     </div>
                 </div>
 
-                {/* Footer - Zoom Button */}
-                <div className="pt-20 pb-4 px-4 flex justify-end items-end">
-                    <button 
-                        onClick={(e) => { e.stopPropagation(); handleZoomEnter(); }}
-                        className="pointer-events-auto bg-orange-500 hover:bg-orange-400 text-white p-4 rounded-full shadow-lg shadow-orange-500/20 transition-transform hover:scale-110 flex items-center gap-2"
+                {/* Footer - Action Buttons */}
+                <div className="pt-20 pb-4 px-4 flex justify-end items-end gap-3">
+                    <button
+                        onClick={(e) => { e.stopPropagation(); }}
+                        className="pointer-events-auto bg-blue-500/90 hover:bg-blue-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Bearbeiten"
                     >
-                        <Maximize2 className="w-6 h-6" />
-                        <span className="font-medium pr-2">Zoom</span>
+                        <Edit3 className="w-5 h-5" />
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); handleZoomEnter(); }}
+                        className="pointer-events-auto bg-purple-500/90 hover:bg-purple-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Zoom"
+                    >
+                        <Maximize2 className="w-5 h-5" />
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); }}
+                        className="pointer-events-auto bg-red-500/90 hover:bg-red-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Löschen"
+                    >
+                        <Trash2 className="w-5 h-5" />
                     </button>
                 </div>
             </div>
@@ -401,14 +417,27 @@ export function TabletGalleryAppV4() {
                 <motion.div
                     initial={{ x: 50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    className="absolute right-8 bottom-12"
+                    className="absolute right-8 bottom-0 top-0 flex flex-col items-end justify-center gap-4 pointer-events-none"
                 >
                     <button
-                        onClick={(e) => { e.stopPropagation(); handleShareStart(); }}
-                        className="bg-orange-500 text-white px-10 py-4 rounded-full font-medium text-xl shadow-xl shadow-orange-500/30 hover:bg-orange-400 transition-all hover:scale-105 flex items-center gap-3"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleZoomClose();
+                        }}
+                        className="pointer-events-auto bg-purple-500/90 hover:bg-purple-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Zoom"
                     >
-                        <Share2 className="w-6 h-6" />
-                        Teilen
+                        <Maximize2 className="w-5 h-5" />
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleShareStart();
+                        }}
+                        className="pointer-events-auto bg-orange-500/90 hover:bg-orange-400 text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+                        title="Teilen"
+                    >
+                        <Share2 className="w-5 h-5" />
                     </button>
                 </motion.div>
             </div>
