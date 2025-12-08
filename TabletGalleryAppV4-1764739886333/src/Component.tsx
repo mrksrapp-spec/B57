@@ -290,7 +290,7 @@ export function TabletGalleryAppV4() {
       setView('success');
       setTimeout(() => {
         setView('gallery');
-        setCurrentIndex(0);
+        setCurrentIndex(INITIAL_ITEMS.length);
       }, 2000);
     }, 2000);
   };
@@ -493,7 +493,7 @@ export function TabletGalleryAppV4() {
                     {/* Message Box with Preview */}
                     <div className="flex-1 flex flex-col items-center justify-center gap-6">
                         {/* Preview Image */}
-                        <div className="w-72 h-72 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl bg-black flex items-center justify-center">
+                        <div className="w-96 h-72 rounded-lg overflow-hidden border-2 border-white/10 shadow-xl bg-black flex items-center justify-center">
                             <img
                                 src={ZOOM_IMAGE}
                                 alt="Preview"
