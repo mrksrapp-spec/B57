@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE score-partwise PUBLIC "-//Recordare//DTD MusicXML 3.1 Partwise//EN" "http://www.musicxml.org/dtds/partwise.dtd">
+<score-partwise version="3.1"><work><work-title>Das Busenbacher Lied</work-title></work>
+<identification><encoding><software>Transkription aus Handschrift</software></encoding></identification>
+<part-list><score-part id="P1"><part-name>Gesang</part-name><score-instrument id="P1-I1"><instrument-name>Voice</instrument-name></score-instrument><midi-instrument id="P1-I1"><midi-program>1</midi-program></midi-instrument></score-part></part-list><part id="P1">
+<measure number="0" implicit="yes">
+<attributes><divisions>4</divisions><key><fifths>0</fifths></key><time><beats>3</beats><beat-type>4</beat-type></time><clef><sign>G</sign><line>2</line></clef></attributes>
+<direction placement="above"><direction-type><metronome><beat-unit>quarter</beat-unit><per-minute>100</per-minute></metronome></direction-type><sound tempo="100"/></direction>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>Wenn</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Ein</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>Drum</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>fröh</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>Bäch</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>bin</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>lich</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>lein</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>auch</text></lyric>
+</note>
+</measure>
+<measure number="1">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>fließt</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>ich</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>durch</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>hin</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>so</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>s'Alb</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>ab</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>gern</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>tal</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>die</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>da</text></lyric>
+</note>
+</measure>
+<measure number="2">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>8</duration><type>half</type>
+<lyric number="1"><syllabic>single</syllabic><text>ziehst,</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Klamm,</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>heim,</text></lyric>
+</note>
+<note><rest/><duration>2</duration><type>eighth</type></note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>wohl</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>das</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>denn</text></lyric>
+</note>
+</measure>
+<measure number="3">
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>auf</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>Was</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>nir</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>der</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>ser</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>gends</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>Höh</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>rauscht</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>kann</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>ein</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>so</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>es</text></lyric>
+</note>
+<note><pitch><step>F</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>Dörf</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>heim</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>schö</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>lein</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>lich</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>ner</text></lyric>
+</note>
+</measure>
+<measure number="4">
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>single</syllabic><text>siehst.</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>dann.</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>sein.</text></lyric>
+</note>
+<note><rest/><duration>2</duration><type>eighth</type></note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>Um</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Der</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>Mein</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>middle</syllabic><text>ge</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>Glo</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Bu</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>ben</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>cken</text></lyric>
+<lyric number="3"><syllabic>middle</syllabic><text>sen</text></lyric>
+</note>
+</measure>
+<measure number="5">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>single</syllabic><text>ist's</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Klang</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>bach,</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>von</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>be</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>mein</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>Wald</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>grüßt</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Hei</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>und</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>dich</text></lyric>
+<lyric number="3"><syllabic>middle</syllabic><text>mat</text></lyric>
+</note>
+</measure>
+<measure number="6">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>8</duration><type>half</type>
+<lyric number="1"><syllabic>single</syllabic><text>Flur.</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>stets,</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>ort,</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>single</syllabic><text>Da</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wenn</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>sei</text></lyric>
+</note>
+</measure>
+<measure number="7">
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>ist</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>sonn</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>mir</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>es</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>tags</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>ge</text></lyric>
+</note>
+<note><pitch><step>F</step><alter>1</alter><octave>4</octave></pitch><duration>2</duration><type>eighth</type><accidental>sharp</accidental>
+<lyric number="1"><syllabic>single</syllabic><text>schön,</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>grüßt</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>ach,</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>durch</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>an</text></lyric>
+</note>
+<note><pitch><step>B</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>glaub</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>s'Dörf</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Alb</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>es</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>lein</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>tals</text></lyric>
+</note>
+</measure>
+<measure number="8">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>8</duration><type>half</type>
+<lyric number="1"><syllabic>single</syllabic><text>nur.</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>gehst.</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>Pfort.</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>single</syllabic><text>So</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Hier</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>Ich</text></lyric>
+</note>
+</measure>
+<measure number="9">
+<note><pitch><step>F</step><octave>4</octave></pitch><duration>3</duration><type>16th</type><dot/>
+<lyric number="1"><syllabic>single</syllabic><text>steig</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wirst</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>grü</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>1</duration><type>16th</type>
+<lyric number="1"><syllabic>begin</syllabic><text>hin</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>ße</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>auf</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>froh,</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>dich</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>und</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>hier</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>noch</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>schau</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wirst</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>man</text></lyric>
+</note>
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>da</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="3"><syllabic>middle</syllabic><text>ches</text></lyric>
+</note>
+</measure>
+<measure number="10">
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>end</syllabic><text>nach:</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wach</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>mal,</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>Es</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>in</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>du</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>ist</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>mei</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>herr</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>mein</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>nem</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>lich</text></lyric>
+</note>
+</measure>
+<measure number="11">
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>begin</syllabic><text>lie</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>lie</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Dörf</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>bes</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>ben</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>lein</text></lyric>
+</note>
+<note><pitch><step>F</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>Bu</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>Bu</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>im</text></lyric>
+</note>
+<note><pitch><step>D</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>middle</syllabic><text>sen</text></lyric>
+<lyric number="2"><syllabic>middle</syllabic><text>sen</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Alb</text></lyric>
+</note>
+</measure>
+<measure number="12">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>end</syllabic><text>bach.</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>bach.</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>tal.</text></lyric>
+</note>
+<note><rest/><duration>2</duration><type>eighth</type></note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>So</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>Hier</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>Ich</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>steig</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wirst</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>grü</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>hin</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>ße</text></lyric>
+</note>
+</measure>
+<measure number="13">
+<note><pitch><step>C</step><octave>5</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>end</syllabic><text>auf</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>froh,</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>dich</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>und</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>hier</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>noch</text></lyric>
+</note>
+<note><pitch><step>F</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>schau</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wirst</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>man</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>begin</syllabic><text>da</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>du</text></lyric>
+<lyric number="3"><syllabic>middle</syllabic><text>ches</text></lyric>
+</note>
+</measure>
+<measure number="14">
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>6</duration><type>quarter</type><dot/>
+<lyric number="1"><syllabic>end</syllabic><text>nach:</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>wach</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>mal,</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>Es</text></lyric>
+<lyric number="2"><syllabic>single</syllabic><text>in</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>du</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>ist</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>mei</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>herr</text></lyric>
+</note>
+<note><pitch><step>C</step><octave>5</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>single</syllabic><text>mein</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>nem</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>lich</text></lyric>
+</note>
+</measure>
+<measure number="15">
+<note><pitch><step>B</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>begin</syllabic><text>lie</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>lie</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Dörf</text></lyric>
+</note>
+<note><pitch><step>A</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>end</syllabic><text>bes</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>ben</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>lein</text></lyric>
+</note>
+<note><pitch><step>G</step><octave>4</octave></pitch><duration>4</duration><type>quarter</type>
+<lyric number="1"><syllabic>begin</syllabic><text>Bu</text></lyric>
+<lyric number="2"><syllabic>begin</syllabic><text>Bu</text></lyric>
+<lyric number="3"><syllabic>single</syllabic><text>im</text></lyric>
+</note>
+<note><pitch><step>F</step><octave>4</octave></pitch><duration>2</duration><type>eighth</type>
+<lyric number="1"><syllabic>middle</syllabic><text>sen</text></lyric>
+<lyric number="2"><syllabic>middle</syllabic><text>sen</text></lyric>
+<lyric number="3"><syllabic>begin</syllabic><text>Alb</text></lyric>
+</note>
+</measure>
+<measure number="16">
+<note><pitch><step>E</step><octave>4</octave></pitch><duration>8</duration><type>half</type>
+<lyric number="1"><syllabic>end</syllabic><text>bach.</text></lyric>
+<lyric number="2"><syllabic>end</syllabic><text>bach.</text></lyric>
+<lyric number="3"><syllabic>end</syllabic><text>tal.</text></lyric>
+</note>
+<note><rest/><duration>4</duration><type>quarter</type></note>
+<barline location="right"><bar-style>light-heavy</bar-style></barline>
+</measure>
+</part></score-partwise>

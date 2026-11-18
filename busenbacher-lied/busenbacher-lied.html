@@ -1,0 +1,203 @@
+<title>Das Busenbacher Lied</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,500&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: ein Liedblatt – Kopf, Spielleiste, Notenbild, mitlaufender Text, alle Strophen */
+:root{
+  --paper:#f6f7f2; --sheet:#ffffff; --ink:#1d2a24; --muted:#5d6b63;
+  --fir:#2f5d46; --alb:#3b6f8f; --glow:#d9e8dc; --line:#d8ddd5;
+  --display:"Alegreya",Georgia,"Times New Roman",serif;
+  --body:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121a16; --sheet:#18221d; --ink:#e6ece7; --muted:#9fb0a6;
+  --fir:#8fc6a5; --alb:#8bbcd8; --glow:#24392d; --line:#2c3a32; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121a16; --sheet:#18221d; --ink:#e6ece7; --muted:#9fb0a6;
+  --fir:#8fc6a5; --alb:#8bbcd8; --glow:#24392d; --line:#2c3a32; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fir);font-weight:700}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(2rem,6vw,3.1rem);line-height:1.05;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0;max-width:62ch}
+.player{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sheet);border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;box-shadow:0 6px 20px -14px rgba(0,0,0,.35)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+button,select,input{font:inherit;color:inherit}
+.play{display:inline-flex;align-items:center;gap:8px;background:var(--fir);color:var(--sheet);border:0;border-radius:999px;padding:9px 20px;font-weight:700;cursor:pointer}
+.play:focus-visible,.seg button:focus-visible,input:focus-visible{outline:3px solid var(--alb);outline-offset:2px}
+.play svg{width:14px;height:14px;fill:currentColor}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:7px 12px;cursor:pointer;color:var(--muted);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--glow);color:var(--ink);font-weight:700}
+.ctl{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.92rem}
+.ctl input[type=range]{width:110px;accent-color:var(--fir)}
+.tnum{font-variant-numeric:tabular-nums;min-width:3.2ch;display:inline-block}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:14px 10px 4px;overflow-x:auto}
+#notation svg path,#notation svg text,#notation svg tspan{fill:var(--ink)}
+#notation svg .hl path,#notation svg .hl text,#notation svg path.hl{fill:var(--alb)}
+.karaoke{display:flex;flex-direction:column;gap:6px}
+.karaoke h2,.verses h2{font-family:var(--display);font-weight:700;font-size:1.35rem;margin:0}
+.now{font-family:var(--display);font-size:clamp(1.25rem,3.6vw,1.65rem);line-height:1.5;min-height:3em;margin:0}
+.now .s{transition:color .12s}
+.now .s.on{color:var(--alb);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+.now .s.done{color:var(--muted)}
+.verses{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+.verse{min-width:0}
+.verse h3{font-family:var(--display);font-style:italic;font-weight:500;color:var(--fir);margin:0 0 4px;font-size:1.1rem}
+.verse p{margin:0}
+.rep{color:var(--muted);font-size:.9rem}
+.note{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.95rem;max-width:68ch}
+.note strong{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.now .s{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Heimatlied · Busenbach im Albtal</span>
+    <h1>Das Busenbacher Lied</h1>
+    <p class="sub">Übertragen aus der handschriftlichen Vorlage. C-Dur, 3/4-Takt. Drück auf Abspielen, dann laufen Noten und Text mit.</p>
+  </header>
+
+  <div class="player" role="group" aria-label="Wiedergabe">
+    <button class="play" id="play" type="button"><svg viewBox="0 0 10 10" aria-hidden="true"><path id="playicon" d="M2 1l7 4-7 4z"/></svg><span id="playlabel">Abspielen</span></button>
+    <div class="seg" id="verseSel" role="group" aria-label="Strophe wählen">
+      <button type="button" data-v="0" aria-pressed="true">1. Strophe</button>
+      <button type="button" data-v="1" aria-pressed="false">2.</button>
+      <button type="button" data-v="2" aria-pressed="false">3.</button>
+      <button type="button" data-v="all" aria-pressed="false">Alle</button>
+    </div>
+    <label class="ctl" for="tempo">Tempo <input id="tempo" type="range" min="66" max="140" value="100"> <span class="tnum" id="tempoVal">100</span></label>
+    <label class="ctl" for="acc"><input id="acc" type="checkbox" checked> Begleitung</label>
+  </div>
+
+  <div class="sheet"><div id="notation"></div></div>
+
+  <section class="karaoke" aria-live="off">
+    <h2 id="nowTitle">1. Strophe</h2>
+    <p class="now" id="now"></p>
+  </section>
+
+  <section class="verses" id="verses"></section>
+
+  <p class="note"><strong>Zur Transkription:</strong> Die Melodie habe ich Note für Note aus dem Scan ausgelesen. Einzelne Töne können abweichen, vor allem bei „wohl auf der Höh“ und „liebes Busenbach“. Die Begleitung ist eine einfache, nachträglich ergänzte Akkordfolge und steht nicht in der Vorlage. In Strophe 2 habe ich „rauschet“ als „rauscht“ gesetzt, damit die Silben zur Melodie passen.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.4.4/dist/abcjs-basic-min.js"></script>
+<script>
+const SONG = {"abc": "X:1\nT:Das Busenbacher Lied\nM:3/4\nL:1/8\nQ:1/4=100\nK:C\nC C E | G3 G G A | G4 z E | D D D D F E | C2 z C C E |\nw: Wenn fröh-lich du durch s'Alb-tal ziehst, wohl auf der Höh ein Dörf-lein siehst. Um-ge-ben\nw: Ein Bäch-lein fließt hin-ab die Klamm, das Was-ser rauscht so heim-lich dann. Der Glo-cken\nw: Drum bin auch ich so gern da-heim, denn nir-gends kann es schö-ner sein. Mein Bu-sen-\nG3 G G A | G4 E2 | D G ^F D B A | G4 G2 |\nw: ist's von Wald und Flur. Da ist es schön, ach, glaub es nur. So\nw: Klang be-grüßt dich stets, wenn sonn-tags du durch s'Dörf-lein gehst. Hier\nw: bach, mein Hei-mat-ort, sei mir ge-grüßt an Alb-tals Pfort. Ich\nF3/2 E/ D D D E | D3 D D D | E3 C F D | G2 z C C C |\nw: steig hin-auf und schau da-nach: Es ist mein lie-bes Bu-sen-bach. So steig hin-\nw: wirst du froh, hier wirst du wach in mei-nem lie-ben Bu-sen-bach. Hier wirst du\nw: grü-ße dich noch man-ches-mal, du herr-lich Dörf-lein im Alb-tal. Ich grü-ße\nc3 A F A | G3 G G c | B2 A G2 F | E4 z2 |]\nw: auf und schau da-nach: Es ist mein lie-bes Bu-sen-bach.\nw: froh, hier wirst du wach in mei-nem lie-ben Bu-sen-bach.\nw: dich noch man-ches-mal, du herr-lich Dörf-lein im Alb-tal.\n", "notes": [[60, 2], [60, 2], [64, 2], [67, 6], [67, 2], [67, 2], [69, 2], [67, 8], [null, 2], [64, 2], [62, 2], [62, 2], [62, 2], [62, 2], [65, 2], [64, 2], [60, 4], [null, 2], [60, 2], [60, 2], [64, 2], [67, 6], [67, 2], [67, 2], [69, 2], [67, 8], [64, 4], [62, 2], [67, 2], [66, 2], [62, 2], [71, 2], [69, 2], [67, 8], [67, 4], [65, 3], [64, 1], [62, 2], [62, 2], [62, 2], [64, 2], [62, 6], [62, 2], [62, 2], [62, 2], [64, 6], [60, 2], [65, 2], [62, 2], [67, 4], [null, 2], [60, 2], [60, 2], [60, 2], [72, 6], [69, 2], [65, 2], [69, 2], [67, 6], [67, 2], [67, 2], [72, 2], [71, 4], [69, 2], [67, 4], [65, 2], [64, 8], [null, 4]], "verses": [["Wenn", "fröh", "lich", "du", "durch", "s'Alb", "tal", "ziehst,", "wohl", "auf", "der", "Höh", "ein", "Dörf", "lein", "siehst.", "Um", "ge", "ben", "ist's", "von", "Wald", "und", "Flur.", "Da", "ist", "es", "schön,", "ach,", "glaub", "es", "nur.", "So", "steig", "hin", "auf", "und", "schau", "da", "nach:", "Es", "ist", "mein", "lie", "bes", "Bu", "sen", "bach.", "So", "steig", "hin", "auf", "und", "schau", "da", "nach:", "Es", "ist", "mein", "lie", "bes", "Bu", "sen", "bach."], ["Ein", "Bäch", "lein", "fließt", "hin", "ab", "die", "Klamm,", "das", "Was", "ser", "rauscht", "so", "heim", "lich", "dann.", "Der", "Glo", "cken", "Klang", "be", "grüßt", "dich", "stets,", "wenn", "sonn", "tags", "du", "durch", "s'Dörf", "lein", "gehst.", "Hier", "wirst", "du", "froh,", "hier", "wirst", "du", "wach", "in", "mei", "nem", "lie", "ben", "Bu", "sen", "bach.", "Hier", "wirst", "du", "froh,", "hier", "wirst", "du", "wach", "in", "mei", "nem", "lie", "ben", "Bu", "sen", "bach."], ["Drum", "bin", "auch", "ich", "so", "gern", "da", "heim,", "denn", "nir", "gends", "kann", "es", "schö", "ner", "sein.", "Mein", "Bu", "sen", "bach,", "mein", "Hei", "mat", "ort,", "sei", "mir", "ge", "grüßt", "an", "Alb", "tals", "Pfort.", "Ich", "grü", "ße", "dich", "noch", "man", "ches", "mal,", "du", "herr", "lich", "Dörf", "lein", "im", "Alb", "tal.", "Ich", "grü", "ße", "dich", "noch", "man", "ches", "mal,", "du", "herr", "lich", "Dörf", "lein", "im", "Alb", "tal."]], "joins": [[false, true, false, false, false, true, false, false, false, false, false, false, false, true, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, true, false, false, false, false, true, false, true, true, false, false, false, true, false, false, false, true, false, false, false, false, true, false, true, true, false], [false, true, false, false, true, false, false, false, false, true, false, false, false, true, false, false, false, true, false, false, true, false, false, false, false, true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, true, false, true, false, true, true, false, false, false, false, false, false, false, false, false, false, true, false, true, false, true, true, false], [false, false, false, false, false, false, true, false, false, true, false, false, false, true, false, false, false, true, true, false, false, true, true, false, false, false, true, false, false, true, false, false, false, true, false, false, false, true, true, false, false, true, false, true, false, false, true, false, false, true, false, false, false, true, true, false, false, true, false, true, false, false, true, false]]};
+// Begleitakkorde je Takt (Grundton + Akkordtöne, MIDI)
+const CH = {C:[48,[60,64,67]],F:[53,[60,65,69]],G:[43,[59,62,67]],G7:[43,[59,62,65]],D7:[50,[60,62,66]]};
+const BAR_CHORDS = ['C','C','C','G','C','C','C','D7','G','G7','G','C','C','F','C','G7','C'];
+const BAR16 = [6,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12];
+
+let visual = null, noteEls = [];
+function render(){
+  visual = ABCJS.renderAbc('notation', SONG.abc, {responsive:'resize', add_classes:true, staffwidth:820, paddingtop:4, paddingbottom:4})[0];
+  noteEls = Array.from(document.querySelectorAll('#notation .abcjs-note, #notation .abcjs-rest'));
+}
+// Silben je Note (nur klingende Noten)
+const lines = [8,8,8,8,16,16];
+function verseHTML(v){
+  const sy = SONG.verses[v], jn = SONG.joins[v]; let html='', i=0;
+  lines.forEach((n,li)=>{ let line='';
+    for(let k=0;k<n;k++,i++){ line += `<span class="s" data-i="${i}">${sy[i]}</span>` + (jn[i]?'':' '); }
+    html += line.trim() + (li<lines.length-1?'<br>':''); });
+  return html;
+}
+function plainVerse(v){
+  const sy=SONG.verses[v], jn=SONG.joins[v]; let out=[], i=0;
+  lines.slice(0,5).forEach(n=>{let l='';for(let k=0;k<n;k++,i++) l+=sy[i]+(jn[i]?'':' ');out.push(l.trim());});
+  return out;
+}
+function buildVerses(){
+  const box=document.getElementById('verses'); box.innerHTML='';
+  [0,1,2].forEach(v=>{ const l=plainVerse(v);
+    const d=document.createElement('div'); d.className='verse';
+    d.innerHTML=`<h3>${v+1}. Strophe</h3><p>${l[0]}<br>${l[1]}<br>${l[2]}<br>${l[3]}<br>|: ${l[4]} :|</p>`;
+    box.appendChild(d); });
+}
+let curVerse=0;
+function showVerse(v){ curVerse=v; document.getElementById('nowTitle').textContent=(v+1)+'. Strophe';
+  document.getElementById('now').innerHTML=verseHTML(v); }
+
+// ---------- Klang
+let ctx=null, master=null, playing=false, timeline=[], raf=0, stopTimer=0, startAt=0, scheduledNodes=[];
+function ensureCtx(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)();
+  master=ctx.createGain(); master.gain.value=0.5;
+  const comp=ctx.createDynamicsCompressor(); master.connect(comp); comp.connect(ctx.destination);} }
+const hz=m=>440*Math.pow(2,(m-69)/12);
+function voice(m,t,dur,vol,kind){
+  const g=ctx.createGain(), f=ctx.createBiquadFilter(); f.type='lowpass';
+  f.frequency.value = kind==='mel'?2600:1400; g.connect(master); f.connect(g);
+  const oscs = kind==='mel' ? [['triangle',0,1],['sine',12,.18],['sawtooth',0,.05]] : [['triangle',0,.7],['sine',-12,.3]];
+  oscs.forEach(([type,shift,amp])=>{ const o=ctx.createOscillator(), og=ctx.createGain(); o.type=type; o.frequency.value=hz(m+shift);
+    if(kind==='mel'){ const lfo=ctx.createOscillator(), lg=ctx.createGain(); lfo.frequency.value=5.2; lg.gain.value=hz(m)*0.004; lfo.connect(lg); lg.connect(o.frequency); lfo.start(t+0.12); lfo.stop(t+dur+0.4); scheduledNodes.push(lfo);}
+    og.gain.value=amp; o.connect(og); og.connect(f); o.start(t); o.stop(t+dur+0.4); scheduledNodes.push(o); });
+  const a=kind==='mel'?0.03:0.01, rel=kind==='mel'?0.12:0.25;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+a);
+  g.gain.setTargetAtTime(vol*(kind==='mel'?0.75:0.35),t+a,kind==='mel'?0.25:0.12);
+  g.gain.setTargetAtTime(0,t+Math.max(a,dur-0.02),rel/3);
+}
+function play(){
+  ensureCtx(); ctx.resume(); stop(true);
+  const qpm=+document.getElementById('tempo').value, s16=60/qpm/4;
+  const verses = sel==='all'?[0,1,2]:[sel];
+  const acc=document.getElementById('acc').checked;
+  timeline=[]; let t=ctx.currentTime+0.15; startAt=t;
+  verses.forEach((v,vi)=>{
+    // Begleitung
+    if(acc){ let bt=t; BAR16.forEach((len,bi)=>{ const [bass,ch]=CH[BAR_CHORDS[bi]];
+        const beats=len/4; for(let b=0;b<beats;b++){ const tb=bt+b*4*s16 + (bi===0?0:0);
+          if(bi===0) { continue; }
+          if(b===0) voice(bass,tb,4*s16*0.9,0.22,'acc'); else ch.forEach(n=>voice(n,tb,4*s16*0.55,0.07,'acc')); }
+        bt+=len*s16; }); }
+    let k=0, x=t;
+    SONG.notes.forEach(([m,d],ni)=>{ const dur=d*s16;
+      if(m!==null){ voice(m,x,dur*0.96,0.32,'mel'); timeline.push({t:x,end:x+dur,ni,si:k,v}); k++; }
+      else timeline.push({t:x,end:x+dur,ni,si:-1,v});
+      x+=dur; });
+    t=x+ (vi<verses.length-1? 8*s16 : 0);
+  });
+  playing=true; setBtn(); showVerse(verses[0]);
+  stopTimer=setTimeout(()=>stop(),(t-ctx.currentTime+0.5)*1000);
+  tick();
+}
+let lastNi=-1, lastV=-1;
+function tick(){
+  if(!playing) return; const now=ctx.currentTime;
+  let ev=null; for(let i=timeline.length-1;i>=0;i--){ if(timeline[i].t<=now){ ev=timeline[i]; break; } }
+  if(ev && ev.end>now){
+    if(ev.v!==lastV){ showVerse(ev.v); lastV=ev.v; }
+    if(ev.ni!==lastNi){ noteEls.forEach(e=>e.classList.remove('hl')); const el=noteEls[ev.ni]; if(el) el.classList.add('hl'); lastNi=ev.ni;
+      if(ev.si>=0) document.querySelectorAll('#now .s').forEach(s=>{ const i=+s.dataset.i; s.classList.toggle('on',i===ev.si); s.classList.toggle('done',i<ev.si); }); }
+  } else if(lastNi!==-1){ noteEls.forEach(e=>e.classList.remove('hl')); lastNi=-1; }
+  raf=requestAnimationFrame(tick);
+}
+function stop(silent){
+  clearTimeout(stopTimer); cancelAnimationFrame(raf);
+  if(ctx){ scheduledNodes.forEach(n=>{try{n.stop(ctx.currentTime+0.02)}catch(e){}}); }
+  scheduledNodes=[]; playing=false; lastNi=-1; lastV=-1;
+  noteEls.forEach(e=>e.classList.remove('hl'));
+  document.querySelectorAll('#now .s').forEach(s=>s.classList.remove('on','done'));
+  if(!silent) setBtn();
+}
+function setBtn(){ document.getElementById('playlabel').textContent=playing?'Stopp':'Abspielen';
+  document.getElementById('playicon').setAttribute('d',playing?'M2 2h6v6H2z':'M2 1l7 4-7 4z'); }
+
+let sel=0;
+document.getElementById('play').addEventListener('click',()=>{ playing?stop():play(); });
+document.querySelectorAll('#verseSel button').forEach(b=>b.addEventListener('click',()=>{
+  sel = b.dataset.v==='all'?'all':+b.dataset.v;
+  document.querySelectorAll('#verseSel button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+  if(playing) stop(); showVerse(sel==='all'?0:sel); }));
+const tempo=document.getElementById('tempo');
+tempo.addEventListener('input',()=>{document.getElementById('tempoVal').textContent=tempo.value;});
+tempo.addEventListener('change',()=>{ if(playing) play(); });
+
+if(window.ABCJS){ render(); } else { document.getElementById('notation').textContent='Das Notenbild konnte nicht geladen werden. Abspielen und Text funktionieren trotzdem.'; }
+buildVerses(); showVerse(0);
+</script>
