@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prompt Lab Lite</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1216;--panel:#131d23;--panel2:#19262d;--line:#2a3941;--text:#e9eee9;--muted:#9baeb5;--dim:#68828c;--accent:#99ddc2;--accentInk:#0c251b;--lock:#ebd3a6;--danger:#f0ab9d;--r:14px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+button:hover{border-color:var(--dim)}
+button.primary{background:var(--accent);color:var(--accentInk);border-color:var(--accent);font-weight:650}
+button.ghost{background:transparent}
+button.icon{padding:6px 9px;line-height:1}
+select,input[type=text],input[type=search],textarea{background:#0f181d;border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%}
+textarea{resize:vertical}
+header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:5}
+header strong{font-size:19px}
+header .sp{flex:1}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;max-width:1300px;margin:0 auto;padding:20px}
+.col{min-width:0}
+.side{position:sticky;top:76px;align-self:start}
+h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px;font-weight:650}
+h2:first-child{margin-top:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;padding:7px 12px}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--accentInk);font-weight:600}
+.piece{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:10px}
+.piece.locked{border-color:#6b5f45}
+.phead{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.phead b{flex:1;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:5px 10px 6px;border-radius:10px;max-width:100%;background:#16232a}
+.chip small{font-size:10px;color:var(--dim);letter-spacing:.04em}
+.chip span{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;max-width:280px;white-space:nowrap}
+.chip.none span{color:var(--dim)}
+.chip.lock{border-color:var(--lock)}
+.chip.more{background:transparent;border-style:dashed}
+.chip.more span{color:var(--muted)}
+.chip.lock small{color:var(--lock)}
+.chip.lock small::after{content:" · fix"}
+.addgrid{display:flex;flex-wrap:wrap;gap:6px}
+.addgrid button{padding:6px 10px;font-size:13px}
+.addgroup{margin:8px 0}
+.addgroup>div:first-child{font-size:11px;color:var(--dim);margin-bottom:5px}
+details.box{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin-bottom:10px}
+details.box>summary{cursor:pointer;color:var(--muted);font-size:14px}
+details.box[open]>summary{margin-bottom:10px}
+.field{margin-bottom:10px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.promptbox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.promptbox textarea{min-height:260px;font:13.5px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;border:0;background:transparent;padding:0}
+.meta{font-size:12px;color:var(--dim);display:flex;justify-content:space-between;margin:6px 0 10px}
+.note{font-size:12px;color:var(--lock);margin:6px 0}
+.hint{font-size:12px;color:var(--dim);margin-top:10px}
+.looks .row{display:flex;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.looks .row:last-child{border:0}
+.looks .row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mobilebar{display:none}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:16px;padding:0;width:min(520px,calc(100vw - 24px));max-height:min(80vh,720px)}
+dialog::backdrop{background:#0008}
+.dlg{display:flex;flex-direction:column;max-height:min(80vh,720px)}
+.dlg .top{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.dlg .top b{display:block;margin-bottom:8px}
+.dlg .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.dlg .list{overflow:auto;padding:6px 8px 10px}
+.opt{display:block;width:100%;text-align:left;border:0;border-radius:8px;background:transparent;padding:8px 10px}
+.opt:hover{background:var(--panel2)}
+.opt.sel{background:#1e3a30;color:#d1ffe8}
+.opt small{display:block;color:var(--dim);font-size:12px}
+.dlg .foot{padding:8px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--dim)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--accent);color:var(--accentInk);padding:8px 16px;border-radius:10px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:20}
+.toast.on{opacity:1}
+@media(max-width:900px){
+ .wrap{grid-template-columns:1fr;padding:14px 16px 90px}
+ .side{position:static}
+ header{padding:12px 16px}
+ header .hide-m{display:none}
+ .mobilebar{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;padding:10px 16px;background:var(--bg);border-top:1px solid var(--line);z-index:6}
+ .mobilebar button{flex:1;padding:11px}
+ .chip span{max-width:220px}
+}
+</style>
+</head>
+<body>
+<header>
+ <strong>Prompt Lab <span style="color:var(--accent)">Lite</span></strong>
+ <span class="sp"></span>
+ <button class="icon ghost" data-act="undo" title="Rückgängig">↶</button>
+ <button class="primary hide-m" data-act="rollAll">🎲 Würfeln</button>
+</header>
+
+<div class="wrap">
+ <main class="col">
+  <h2>Outfit</h2>
+  <div class="bar" style="margin-bottom:12px">
+   <span class="seg" id="depth"></span>
+   <select id="style" style="width:auto;max-width:230px" title="Stil färbt Farben, Stoffe und Muster ein"></select>
+   <label style="font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center"><input type="checkbox" id="harmony"> Farben abstimmen</label>
+  </div>
+  <div id="pieces"></div>
+  <details class="box" id="addbox">
+   <summary>＋ Teil hinzufügen</summary>
+   <div id="addlist"></div>
+  </details>
+  <div class="bar" style="margin:4px 0 0">
+   <span style="font-size:12px;color:var(--dim)">Neu starten mit:</span>
+   <button class="ghost" data-start="top,bottom,shoes">Oberteil + Unterteil + Schuhe</button>
+   <button class="ghost" data-start="dress,shoes">Kleid + Schuhe</button>
+   <button class="ghost" data-start="bra,panty">Wäsche-Set</button>
+   <button class="ghost" data-start="swim">Bademode</button>
+  </div>
+
+  <h2>Rahmen <span style="text-transform:none;letter-spacing:0;color:var(--dim)">· optional</span></h2>
+  <details class="box" id="framebox">
+   <summary id="framesum">Person, Foto-Stil, Ausschnitt, Ort, Licht</summary>
+   <div class="field"><label for="person">Person</label><input type="text" id="person" placeholder="z. B. Denise, 30, dunkelblonde schulterlange Haare – leer = „a woman“"></div>
+   <div class="field"><label for="photo">Foto-Stil</label><select id="photo"></select></div>
+   <div class="field"><label for="framing">Bildausschnitt</label><select id="framing"></select></div>
+   <div class="field"><label>Ort</label><div id="scene"></div></div>
+   <div class="field"><label>Licht</label><div id="light"></div></div>
+  </details>
+ </main>
+
+ <aside class="side">
+  <div class="promptbox">
+   <div class="bar" style="justify-content:space-between">
+    <span class="seg" id="mode"></span>
+   </div>
+   <div class="meta"><span id="count"></span><span id="editedflag"></span></div>
+   <textarea id="out" spellcheck="false" aria-label="Prompt"></textarea>
+   <div id="editnote" class="note" hidden>Von Hand bearbeitet. Würfeln oder Ändern eines Teils erzeugt den Text neu. <button class="ghost icon" data-act="regen">Neu erzeugen</button></div>
+   <div class="bar" style="margin-top:10px">
+    <button class="primary" data-act="copy" style="flex:1">Prompt kopieren</button>
+    <button data-act="saveLook">Look sichern</button>
+   </div>
+   <div class="hint">Für Nano Banana als Fließtext gebaut. Modus „Foto bearbeiten“: Foto hochladen, Prompt einfügen. Nur die Kleidung wird getauscht, Gesicht, Pose und Hintergrund bleiben.</div>
+  </div>
+  <details class="box looks" id="looksbox" style="margin-top:10px">
+   <summary>Gesicherte Looks <span id="lookcount"></span></summary>
+   <div id="looks"></div>
+  </details>
+ </aside>
+</div>
+
+<div class="mobilebar">
+ <button class="primary" data-act="rollAll">🎲 Würfeln</button>
+ <button data-act="copy">Kopieren</button>
+</div>
+
+<dialog id="dlg"><div class="dlg">
+ <div class="top"><b id="dlgTitle"></b><input type="search" id="dlgSearch" placeholder="Suchen …" autocomplete="off">
+  <div class="acts"><button data-dlg="random">🎲 Zufällig</button><button data-dlg="lock" id="dlgLock"></button><button data-dlg="none" id="dlgNone">Weglassen</button><span style="flex:1"></span><button class="ghost" data-dlg="close">Schließen</button></div>
+ </div>
+ <div class="list" id="dlgList"></div>
+ <div class="foot" id="dlgFoot"></div>
+</div></dialog>
+<div class="toast" id="toast"></div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+"use strict";
+/* ───── Daten ───── */
+const D=JSON.parse(document.getElementById('data').textContent);
+const POOL=D.pool;
+const revive=o=>o&&o.__re?new RegExp(o.__re[0],o.__re[1]):(typeof o==='string'?new RegExp('^'+o.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'$'):o);
+const mapObj=(o,f)=>o?Object.fromEntries(Object.entries(o).map(([k,v])=>[k,f(v)])):null;
+for(const c of Object.values(D.cards))c.rules=(c.rules||[]).map(r=>({when:mapObj(r.when,revive)||{},restrict:mapObj(r.restrict,revive),hide:r.hide||[],force:r.force||null}));
+const SF={};for(const [k,v] of Object.entries(D.styleF||{}))SF[k]=mapObj(v,revive);
+const NEUTRAL=new Set(D.neutral);
+
+const GARMENTS=[
+ ['Basis',['top','mid','bottom','dress','robe','spec']],
+ ['Beine & Füße',['shoes','tights','stock','socks']],
+ ['Wäsche & Bademode',['bra','panty','garter','leo','baby','corset','swim']],
+ ['Accessoires',['bags','belt','scarf','gloves','head','jewel','choker']]
+];
+const TITLE={robe:'Jacke / drüber',mid:'Zweites Oberteil',spec:'Anlass-Outfit',bottom:'Rock / Hose'};
+const title=k=>TITLE[k]||D.cards[k].t;
+const LAB={col:'Farbe',pat:'Muster',mat:'Stoff',brand:'Marke',cut:'Form',base:'Teil',form:'Modell',cat:'Kategorie',item:'Teil',
+ neck:'Ausschnitt',reveal:'Ausschnitt zeigt',sleeve:'Ärmel',len:'Länge',fit:'Sitz',gloss:'Glanz',heel:'Absatzform',toe:'Spitze',
+ wear:'Tragweise',spot:'Ort',situ:'Stimmung',det:'Detail',crop:'Saumhöhe',tuck:'Verbindung',cond:'Zustand',den:'Denier',
+ type:'Art',width:'Breite',one:'Modell',size:'Größe'};
+const label=(k,x)=>(k==='jewel'&&x==='neck')?'Halskette':(k==='stock'&&x==='heel')?'Ferse':(LAB[x]||D.axlab[x]||x);
+/* Achsen, die beim Würfeln nie leer bleiben */
+const CORE=new Set(['col','mat','cut','base','form','item','cat','spot','situ','den','type','one','size','width','prep']);
+/* Auffällige Stoffe: kommen seltener und tragen kein zusätzliches Muster */
+const SPECIAL=/sheer|lace|tulle|\bnet\b|mesh|organza|chiffon|georgette|voile|vinyl|latex|pvc|sequin|beaded|glitter|metallic|lamé|patent|rubber|crochet|eyelash|guipure|cutwork|burnt-out|dévoré|powernet|marquisette|point d|illusion|knit|boucle|mohair|chenille|terry|fur|feather/i;
+/* Wie viele Zusatzdetails ein Teil je Tiefe höchstens bekommt */
+const DETAIL_CAP=[0,2,5];
+
+/* ───── Zustand ───── */
+const KEY='promptlab.lite.v1';
+let uid=0;const newId=()=>'p'+Date.now().toString(36)+(uid++);
+function freshState(){return {pieces:[],depth:1,style:'',harmony:true,mode:'new',person:'',photo:'',framing:'',
+ scene:{on:false,a:{},lock:{}},light:{on:false,a:{},lock:{}},text:null,looks:[]}}
+let S=freshState();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(freshState(),JSON.parse(raw))}catch(e){}
+S.pieces=S.pieces.filter(p=>D.cards[p.k]);
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const hist=[];const checkpoint=()=>{hist.push(JSON.stringify({...S,looks:undefined}));if(hist.length>40)hist.shift()};
+
+/* ───── Regel-Engine (aus Prompt Lab 7 übernommen) ───── */
+const isNone=v=>v==null||v===''||/^—/.test(String(v));
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+function list(k,x,a){const ax=D.cards[k].ax[x];if(ax==null)return [];if(typeof ax==='number')return POOL[ax];const i=ax.map[a[ax.dep]];return i==null?[]:POOL[i]}
+const matches=(r,a)=>Object.entries(r.when).every(([x,re])=>a[x]!==undefined&&re.test(String(a[x]||'')));
+function ruleInfo(k,a){
+ const c=D.cards[k],hidden=new Set(),allowed={},forced={};
+ for(const x of Object.keys(c.ax))allowed[x]=list(k,x,a);
+ const active=c.rules.filter(r=>matches(r,a));
+ for(const r of active){for(const x of r.hide)if(c.ax[x]!=null)hidden.add(x);
+  if(r.force)for(const [x,v] of Object.entries(r.force))if(c.ax[x]!=null){const st=t=>String(t).replace(/^(a|an|the)\s+/i,'');forced[x]=list(k,x,a).find(t=>st(t)===st(v))??v}}
+ for(const x of Object.keys(c.ax)){
+  let cs=active.filter(r=>r.restrict&&r.restrict[x]);
+  if(cs.some(r=>Object.values(r.when).some(w=>!String(w).startsWith('/./'))))cs=cs.filter(r=>!Object.values(r.when).every(w=>String(w)==='/./'));
+  for(const r of cs)allowed[x]=allowed[x].filter(v=>r.restrict[x].test(String(v)));
+  if(forced[x]!==undefined)allowed[x]=allowed[x].filter(v=>v===forced[x]);
+ }
+ if(k==='shoes'&&/Sneaker|Flache|Schnürschuhe/.test(a.cat||'')){allowed.heelh=list(k,'heelh',a).filter(v=>/no heel|low 3 cm|hidden platform|—/.test(v));if(/heel|wedge|pumps/.test(a.form||''))allowed.heelh=allowed.heelh.filter(v=>v!=='no heel')}
+ const cut=String(a.cut||a.form||a.base||'');
+ const narrow=(x,re)=>{if(allowed[x])allowed[x]=allowed[x].filter(v=>isNone(v)||re.test(String(v)))};
+ /* Form verlangt passenden Stoff (Jeans aus Denim usw.) – nur wenn danach noch etwas übrig bleibt */
+ const narrowSafe=(x,re)=>{if(!allowed[x])return;const f=allowed[x].filter(v=>isNone(v)||re.test(String(v)));if(f.some(v=>!isNone(v)))allowed[x]=f};
+ if(/jeans|denim/i.test(cut))narrowSafe('mat',/denim/i);
+ if(/\b(sweater|jumper|cardigan|pullover|turtleneck|knit)/i.test(cut))narrowSafe('mat',/knit|wool|cashmere|merino|mohair|alpaca|angora|chenille|boucle|cotton|fleece/i);
+ if(/t-shirt|\btee\b|tank|vest top|camisole|\bcami\b/i.test(cut))narrowSafe('mat',/cotton|jersey|modal|bamboo|linen|silk|satin|rib|tencel|cupro|mesh|lace/i);
+ if(/hoodie|sweatshirt|jogger|sweatpants|tracksuit/i.test(cut))narrowSafe('mat',/cotton|jersey|fleece|terry|velour|loopback/i);
+ if(/trench|parka|puffer|anorak|raincoat/i.test(cut))narrowSafe('mat',/cotton|gabardine|twill|nylon|poly|wax|canvas|leather|vinyl/i);
+ if(/long-sleeve/.test(cut))narrow('sleeve',/long|bishop/);
+ if(/short-sleeve/.test(cut))narrow('sleeve',/short|cap/);
+ if(/sleeveless|tank|camisole|bandeau|tube top|halter/.test(cut))hidden.add('sleeve');
+ if(/sleeveless/.test(a.sleeve||''))hidden.add('cuff');
+ if(/\bmaxi\b|floor-length/.test(cut))narrow('len',/maxi|floor|ankle|train/);
+ if(/\bmidi\b/.test(cut))narrow('len',/midi|below-the-knee|tea|knee/);
+ if(/\bmini\b|\bmicro\b/.test(cut))narrow('len',/mini|above-the-knee|thigh/);
+ if(k==='shoes'){if(/knee-high|knee boots|to the knee/.test(cut))narrow('shaft',/^knee/);if(/over-the-knee/.test(cut))narrow('shaft',/over-the-knee/);if(/thigh-high|thigh height/.test(cut))narrow('shaft',/thigh/)}
+ return {hidden,allowed,forced};
+}
+/* Welche Felder ein Teil bei der gewählten Tiefe zeigt */
+const DEPTH_MAX=[0,1,3];
+function axesFor(k,p){
+ const c=D.cards[k];let xs;
+ if(k==='scene')xs=['cat','spot','prep'];else if(k==='light')xs=['cat','situ'];
+ else xs=[...c.pre,...c.post.filter(([x,l])=>l<=DEPTH_MAX[S.depth]||(p.lock&&p.lock[x])).map(([x])=>x)];
+ const out=[];const add=x=>{if(out.includes(x)||c.ax[x]==null)return;const ax=c.ax[x];if(typeof ax==='object')add(ax.dep);out.push(x)};
+ xs.forEach(add);return out;
+}
+function otherColors(p){return S.pieces.filter(q=>q!==p).map(q=>q.a.col).filter(v=>v&&!isNone(v))}
+function pick(p,x,info){
+ const k=p.k;if(info.forced[x]!==undefined)return info.forced[x];
+ const L=info.allowed[x]||[];if(!L.length)return undefined;
+ let real=L.filter(v=>!isNone(v));const none=L.find(isNone);
+ const sf=S.style&&SF[S.style];
+ if(sf&&sf[x]){const f=real.filter(v=>sf[x].test(v));if(f.length)real=f}
+ if(x==='pat'&&none!==undefined){if(SPECIAL.test(p.a.mat||''))return none;if(Math.random()<.8&&!(sf&&sf.pat&&!sf.pat.test(none)))return none}
+ if(x==='mat'&&!(sf&&sf.mat)){const plain=real.filter(v=>!SPECIAL.test(v));if(plain.length&&Math.random()<.75)real=plain}
+ if(x==='prep'&&p.a.spot)return guessPrep(p.a.spot,L);
+ if(x==='brand')return none!==undefined&&Math.random()<.85?none:rnd(real.length?real:L);
+ if(x==='col'&&S.harmony&&real.length){
+  const acc=otherColors(p).filter(c=>!NEUTRAL.has(c)&&D.fam[c]!=='metal');
+  let pool=real;if(acc.length){const f=real.filter(c=>NEUTRAL.has(c)||D.fam[c]===D.fam[acc[0]]);if(f.length)pool=f}
+  const neu=pool.filter(c=>NEUTRAL.has(c));real=(neu.length&&Math.random()<.55)?neu:pool;
+ }
+ const isCore=CORE.has(x)||(k==='socks'&&x==='len');
+ if(!isCore&&none!==undefined&&Math.random()<.4)return none;
+ return real.length?rnd(real):(none??L[0]);
+}
+function guessPrep(spot,L){const s=String(spot);
+ const v=/balcony|roof|terrace|beach|bench|\bbed\b|sofa|couch|stairs|steps|staircase|fire escape|platform|bridge|pier|jetty|deck|street|pavement|path|promenade|boardwalk|landing|stage|dance floor|train|bus\b|ferry|boat|slope|hill|dune|rock/i.test(s)?'on'
+  :/counter|desk|\bbar\b|window|door|gate|entrance|bus stop|checkout|reception|till|sink|mirror|edge/i.test(s)?'at':'in';
+ return L.includes(v)?v:(L.find(x=>!isNone(x))||L[0]);}
+const ROLL_FIRST=['cat','cut','form','base','item','spot','mat','col','pat'];
+function rollOrder(k,p){const xs=axesFor(k,p);const first=ROLL_FIRST.filter(x=>xs.includes(x));
+ const out=[];const add=x=>{if(out.includes(x))return;const ax=D.cards[k].ax[x];if(ax&&typeof ax==='object'&&xs.includes(ax.dep))add(ax.dep);out.push(x)};
+ [...first,...xs].forEach(add);return out}
+function capDetails(p){
+ const c=D.cards[p.k];if(['scene','light'].includes(p.k))return;
+ const cap=DETAIL_CAP[S.depth],xs=axesFor(p.k,p),info=ruleInfo(p.k,p.a);
+ const posts=c.post.map(([x])=>x).filter(x=>xs.includes(x)&&!info.hidden.has(x)&&!isNone(p.a[x]));
+ let free=posts.filter(x=>!p.lock[x]);const keep=Math.max(0,cap-(posts.length-free.length));
+ free.sort(()=>Math.random()-.5);
+ for(const x of free.slice(keep)){const n=(info.allowed[x]||[]).find(isNone)??list(p.k,x,p.a).find(isNone);if(n!==undefined)p.a[x]=n}
+}
+function roll(p,onlyInvalid=false){
+ if(p.locked)return;
+ const xs=rollOrder(p.k,p);const fresh=!onlyInvalid;
+ for(let pass=0;pass<4;pass++){let changed=false;
+  for(const x of xs){if(p.lock[x])continue;const info=ruleInfo(p.k,p.a);if(info.hidden.has(x))continue;
+   const L=info.allowed[x]||[];const bad=!L.includes(p.a[x]);
+   if((pass===0&&!onlyInvalid)||bad){const v=pick(p,x,info);if(v!==p.a[x]){p.a[x]=v;changed=true}}}
+  if(pass>0&&!changed)break;onlyInvalid=true;}
+ if(fresh)capDetails(p);
+ /* Schmuck ohne Grundteil: mindestens ein Feld füllen */
+ if(!D.cards[p.k].pre.length&&!['scene','light'].includes(p.k)&&xs.every(x=>isNone(p.a[x]))){const x=xs.find(x=>!p.lock[x]);if(x){const r=list(p.k,x,p.a).filter(v=>!isNone(v));if(r.length)p.a[x]=rnd(r)}}
+}
+function newPiece(k){const p={id:newId(),k,a:{},lock:{},locked:false};roll(p);return p}
+
+/* ───── Text ───── */
+const PLURAL=/\b(jeans|trousers|pants|shorts|leggings|tights|stockings|socks|boots|booties|shoes|sandals|heels|pumps|trainers|sneakers|loafers|mules|flats|clogs|slippers|wellies|wellingtons|brogues|oxfords|espadrilles|joggers|chinos|culottes|overalls|dungarees|pyjamas|briefs|knickers|panties|bottoms|gloves|mittens|earrings|hoops|studs|suspenders|garters|flip-flops|slides|creepers|jodhpurs|breeches|bloomers|hot pants|capris|cargos|sweatpants|slacks|tap pants|boy shorts|boyshorts|thigh-highs|hold-ups|knee-highs|warmers)\b/i;
+function article(s,anchor){
+ if(!s||/^(a|an|the|one|two|three|pair|pairs|some|no|barefoot|shoes|heels|her)\b/i.test(s))return s;
+ const head=String(anchor||'').split(/ with |,/)[0].trim().split(/\s+/).pop()||'';
+ if(PLURAL.test(String(anchor||''))||/[^s]s$/i.test(head))return s;
+ return (/^[aeiou]/i.test(s)&&!/^(uni|use|one|eu)/i.test(s)?'an ':'a ')+s;
+}
+function phrase(p){
+ const c=D.cards[p.k],info=ruleInfo(p.k,p.a),xs=axesFor(p.k,p);
+ const anc=String(p.a.cut||p.a.form||p.a.base||p.a.item||'').toLowerCase();
+ const redundant=x=>(x==='mat'&&anc&&anc.includes(String(p.a.mat).toLowerCase().split(' ').pop()))||(x==='sleeve'&&/sleeve/.test(anc));
+ const val=x=>xs.includes(x)&&!info.hidden.has(x)&&!isNone(p.a[x])&&!redundant(x)?String(p.a[x]):'';
+ if(p.k==='scene'){const v=val('spot');if(!v)return '';if(/^(in|inside|on|at|beside|next to|between|under|behind|near|by|opposite|across|just outside|in front of|overlooking|looking out|halfway|tucked)\b/i.test(v))return v;return (val('prep')||'in')+' '+v}
+ if(p.k==='light')return val('situ');
+ const pre=c.pre.map(val).filter(Boolean);if(c.fixed)pre.push(c.fixed);
+ const parts=[];for(const [x] of c.post){let v=val(x);if(!v)continue;if(!c.sep)v=v.replace(/^with\s+/i,'');if(!parts.includes(v))parts.push(v)}
+ if(!pre.length&&!parts.length)return '';
+ /* Nomen ("a V-neckline", "puff sleeves") hinter "with", Zustände ("unbuttoned to …", "floor length") hinter Komma */
+ const CLAUSE=/^(showing|covering|leaving|revealing|exposing|unbuttoned|buttoned|half|done up|tucked|untucked|knotted|pulled|worn|cropped|falling|clinging|static|limp|pristine|crumpled|creased|heavily|slightly|open|slipping|riding|sitting|stopping|meeting|pooling|tapered|wide and|straining|stretched|hanging|rolled|sheer|semi-sheer|opaque|see-through|fully|partly|barely|so |only|reaching|ending|cut |set |no |not |freshly|dusty|scuffed|worn|new|brand|muddy|wet|damp|faded|frayed|torn|ripped|stained|wrinkled|bobbled|pilled|dirty|clean|polished|battered|broken|well-|still|just|slightly|loosely|tightly)/i;
+ const nouns=parts.filter(v=>!CLAUSE.test(v)&&!/^\w+ing\b/i.test(v)&&!/\blength$/i.test(v)),clauses=parts.filter(v=>!nouns.includes(v));
+ let s=pre.join(' ');
+ if(c.sep&&parts.length)s+=(s?c.sep:'')+parts.join(', ');
+ else{if(nouns.length)s+=(s?' with ':'')+joinList(nouns);if(clauses.length)s+=(s?', ':'')+clauses.join(', ')}
+ s=s.replace(/\s+/g,' ').trim();
+ return pre.length?article(s,p.a.cut||p.a.form||p.a.base||p.a.item||pre[pre.length-1]):s;
+}
+function joinList(a){if(a.length<2)return a.join('');const semi=a.some(s=>s.includes(','));const sep=semi?'; ':', ';return a.slice(0,-1).join(sep)+(semi?'; and ':' and ')+a[a.length-1]}
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const ORDER={main:['dress','spec','leo','swim','baby','corset','top','mid','bottom'],under:['bra','panty','garter'],legs:['tights','stock','socks','shoes'],outer:['robe'],acc:['belt','scarf','gloves','head','bags','choker','jewel']};
+function outfitText(){
+ const by=g=>ORDER[g].flatMap(k=>S.pieces.filter(p=>p.k===k)).map(phrase).filter(Boolean);
+ const main=by('main'),under=by('under'),legs=by('legs'),outer=by('outer'),acc=by('acc');
+ const out=[];
+ if(main.length){out.push('She is wearing '+joinList([...main,...legs])+'.');if(under.length)out.push('Underneath: '+joinList(under)+'.')}
+ else if(under.length||legs.length)out.push('She is wearing '+joinList([...under,...legs])+'.');
+ if(outer.length)out.push('Over it: '+joinList(outer)+'.');
+ if(acc.length)out.push('Accessories: '+joinList(acc)+'.');
+ if(S.style)out.push('The overall look is '+S.style+'.');
+ return out.join(' ');
+}
+function buildPrompt(){
+ const outfit=outfitText();
+ if(S.mode==='edit')return ['Using the attached photo, change only her clothes. Keep her face, hair, body, pose, the background and the lighting exactly as they are.',
+  outfit||'(Noch kein Outfit gewählt.)','The new clothes fit her body and pose naturally, with realistic fabric folds and shadows.'].join(' ');
+ const who=S.person.trim()||'a woman';
+ const s=[];
+ s.push(S.photo?S.photo+' of '+who+'.':'A photo of '+who+'.');
+ if(S.framing)s.push(cap(S.framing)+'.');
+ if(outfit)s.push(outfit);
+ if(S.scene.on){const t=phrase(S.scene);if(t)s.push(cap(t)+'.')}
+ if(S.light.on){const t=phrase(S.light);if(t)s.push(cap(t)+'.')}
+ return s.join(' ');
+}
+
+/* ───── Oberfläche ───── */
+const $=id=>document.getElementById(id);
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DISPLAY_FIRST=['cat','cut','form','base','item','spot','prep','situ','col','mat','pat'];
+function chipsHTML(p,ref){
+ const info=ruleInfo(p.k,p.a),xs=axesFor(p.k,p).filter(x=>!info.hidden.has(x));
+ const ordered=[...DISPLAY_FIRST.filter(x=>xs.includes(x)),...xs.filter(x=>!DISPLAY_FIRST.includes(x))];
+ const chip=x=>{const v=p.a[x];const none=isNone(v);
+  return '<button class="chip'+(none?' none':'')+(p.lock[x]?' lock':'')+'" data-chip="'+ref+'|'+x+'"><small>'+E(label(p.k,x))+'</small><span>'+E(none?'—':v)+'</span></button>'};
+ const empty=ordered.filter(x=>isNone(p.a[x])&&!p.lock[x]&&!CORE.has(x));
+ const shown=ordered.filter(x=>p.open||!empty.includes(x));
+ return shown.map(chip).join('')+(empty.length?'<button class="chip more" data-more="'+ref+'"><small>&nbsp;</small><span>'+(p.open?'− weniger':'＋ '+empty.length+' Details')+'</span></button>':'');
+}
+function renderPieces(){
+ $('pieces').innerHTML=S.pieces.length?S.pieces.map(p=>'<div class="piece'+(p.locked?' locked':'')+'"><div class="phead"><b>'+E(title(p.k))+'</b>'+
+  '<button class="icon ghost" data-proll="'+p.id+'" title="Nur dieses Teil würfeln"'+(p.locked?' disabled':'')+'>🎲</button>'+
+  '<button class="icon ghost" data-plock="'+p.id+'" title="Ganzes Teil fixieren">'+(p.locked?'🔒':'🔓')+'</button>'+
+  '<button class="icon ghost" data-pdel="'+p.id+'" title="Entfernen">✕</button></div><div class="chips">'+chipsHTML(p,p.id)+'</div></div>').join('')
+  :'<div class="piece" style="color:var(--muted)">Noch keine Teile. Unten starten oder ein Teil hinzufügen.</div>';
+}
+function renderFrame(){
+ for(const k of ['scene','light']){const r=S[k];
+  $(k).innerHTML='<div class="bar">'+'<label style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox" data-fon="'+k+'" '+(r.on?'checked':'')+'> verwenden</label></div>'+(r.on?'<div class="chips" style="margin-top:6px">'+chipsHTML(r,k)+'</div>':'');}
+ const bits=[S.person&&'Person',S.photo&&'Foto-Stil',S.framing&&'Ausschnitt',S.scene.on&&'Ort',S.light.on&&'Licht'].filter(Boolean);
+ $('framesum').textContent=bits.length?'Aktiv: '+bits.join(', '):'Person, Foto-Stil, Ausschnitt, Ort, Licht';
+}
+function renderPrompt(){
+ const t=S.text??buildPrompt();
+ if(document.activeElement!==$('out'))$('out').value=t;
+ const w=t.trim()?t.trim().split(/\s+/).length:0;$('count').textContent=w+' Wörter';
+ $('editnote').hidden=S.text==null;$('editedflag').textContent=S.text!=null?'bearbeitet':'live';
+}
+function renderLooks(){
+ $('lookcount').textContent=S.looks.length?'('+S.looks.length+')':'';
+ $('looks').innerHTML=S.looks.length?S.looks.map((l,i)=>'<div class="row"><span title="'+E(l.prompt||'')+'">'+E(l.n)+' <small style="color:var(--dim)">'+E(l.date)+'</small></span><button class="icon" data-lload="'+i+'">Laden</button><button class="icon ghost" data-ldel="'+i+'">✕</button></div>').join(''):'<div style="color:var(--dim);font-size:13px">Noch nichts gesichert.</div>';
+}
+function renderControls(){
+ $('depth').innerHTML=['Kompakt','Normal','Detailliert'].map((t,i)=>'<button data-depth="'+i+'" aria-pressed="'+(S.depth===i)+'" title="'+['Nur Farbe, Stoff, Form','Plus die wichtigsten Details','Alle Details'][i]+'">'+t+'</button>').join('');
+ $('mode').innerHTML=[['new','Neues Bild'],['edit','Foto bearbeiten']].map(([v,t])=>'<button data-mode="'+v+'" aria-pressed="'+(S.mode===v)+'">'+t+'</button>').join('');
+ $('harmony').checked=!!S.harmony;$('style').value=S.style;$('person').value=S.person;$('photo').value=S.photo;$('framing').value=S.framing;
+}
+function render(){renderControls();renderPieces();renderFrame();renderPrompt();renderLooks();save()}
+function changed(){S.text=null;render()}
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1400)}
+
+/* statische Auswahllisten */
+(function initStatic(){
+ let h='<option value="">Stil: keiner</option>';
+ for(const cat of D.styleCat){if(isNone(cat)||!D.styleM[cat])continue;h+='<optgroup label="'+E(cat)+'">'+D.styleM[cat].map(v=>'<option>'+E(v)+'</option>').join('')+'</optgroup>'}
+ $('style').innerHTML=h;
+ $('photo').innerHTML='<option value="">— keiner —</option>'+D.photo.map(v=>'<option>'+E(v)+'</option>').join('');
+ $('framing').innerHTML='<option value="">— keiner —</option>'+D.frame.map(v=>'<option>'+E(v)+'</option>').join('');
+ $('addlist').innerHTML=GARMENTS.map(([g,ks])=>'<div class="addgroup"><div>'+E(g)+'</div><div class="addgrid">'+ks.filter(k=>D.cards[k]).map(k=>'<button data-add="'+k+'">'+E(title(k))+'</button>').join('')+'</div></div>').join('');
+})();
+
+/* ───── Auswahl-Dialog ───── */
+let cur=null;
+const refObj=ref=>ref==='scene'||ref==='light'?S[ref]:S.pieces.find(p=>p.id===ref);
+function openChip(ref,x){cur={ref,x};$('dlgSearch').value='';drawDlg();$('dlg').showModal();if(matchMedia('(min-width:900px)').matches)$('dlgSearch').focus()}
+function drawDlg(){
+ const p=refObj(cur.ref),x=cur.x,info=ruleInfo(p.k,p.a);
+ const all=list(p.k,x,p.a),L=info.allowed[x]||[];const q=$('dlgSearch').value.trim().toLowerCase();
+ const shown=L.filter(v=>!isNone(v)&&(!q||v.toLowerCase().includes(q)||(D.gloss[v]||'').toLowerCase().includes(q)));
+ $('dlgTitle').textContent=title(p.k)+' · '+label(p.k,x);
+ $('dlgLock').textContent=p.lock[x]?'🔒 Fixiert':'🔓 Nicht fixiert';
+ $('dlgNone').hidden=!L.some(isNone)||CORE.has(x);
+ $('dlgList').innerHTML=shown.map(v=>'<button class="opt'+(v===p.a[x]?' sel':'')+'" data-val="'+E(v)+'">'+E(v)+(D.gloss[v]?'<small>'+E(D.gloss[v])+'</small>':'')+'</button>').join('')||'<div style="padding:10px;color:var(--dim)">Nichts gefunden.</div>';
+ const hid=all.filter(v=>!isNone(v)).length-L.filter(v=>!isNone(v)).length;
+ $('dlgFoot').textContent=shown.length+' Optionen'+(hid>0?' · '+hid+' ausgeblendet, weil sie nicht zur Auswahl passen':'')+' · Eine Auswahl wird automatisch fixiert.';
+}
+function setVal(v,lock){const p=refObj(cur.ref);checkpoint();p.a[cur.x]=v;p.lock[cur.x]=lock;roll(p,true);changed()}
+$('dlgSearch').addEventListener('input',drawDlg);
+$('dlg').addEventListener('click',e=>{
+ if(e.target===$('dlg')){$('dlg').close();return}
+ const o=e.target.closest('[data-val]');if(o){setVal(o.dataset.val,true);$('dlg').close();return}
+ const b=e.target.closest('[data-dlg]');if(!b)return;const p=refObj(cur.ref),a=b.dataset.dlg;
+ if(a==='close')$('dlg').close();
+ if(a==='random'){checkpoint();p.lock[cur.x]=false;const was=p.locked;p.locked=false;const info=ruleInfo(p.k,p.a);p.a[cur.x]=pick(p,cur.x,info);roll(p,true);p.locked=was;changed();drawDlg()}
+ if(a==='lock'){p.lock[cur.x]=!p.lock[cur.x];changed();drawDlg()}
+ if(a==='none'){const n=(ruleInfo(p.k,p.a).allowed[cur.x]||[]).find(isNone);if(n!==undefined){setVal(n,true);$('dlg').close()}}
+});
+
+/* ───── Aktionen ───── */
+function rollAll(){checkpoint();S.pieces.forEach(p=>roll(p));if(S.scene.on)roll(S.scene);if(S.light.on)roll(S.light);changed()}
+function restart(keys){checkpoint();S.pieces=keys.map(newPiece);S.pieces.forEach(p=>roll(p));changed()}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button,[data-fon]');if(!t||t.closest('dialog'))return;const d=t.dataset;
+ if(d.act==='rollAll')rollAll();
+ else if(d.act==='undo'){const h=hist.pop();if(h){const looks=S.looks;S=Object.assign(freshState(),JSON.parse(h));S.looks=looks;render();toast('Rückgängig')}}
+ else if(d.act==='copy'){const t=$('out').value;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Kopiert')).catch(()=>{$('out').select();document.execCommand('copy');toast('Kopiert')})}
+ else if(d.act==='regen'){S.text=null;render()}
+ else if(d.act==='saveLook'){const n=prompt('Name für den Look:','Look '+(S.looks.length+1));if(n==null)return;const snap=JSON.parse(JSON.stringify({...S,looks:undefined,text:S.text}));S.looks.unshift({n:n||'Look',date:new Date().toLocaleDateString('de-DE'),prompt:$('out').value,snap});render();toast('Gesichert')}
+ else if(d.lload!=null){checkpoint();const l=S.looks[+d.lload],looks=S.looks;S=Object.assign(freshState(),JSON.parse(JSON.stringify(l.snap)));S.looks=looks;S.pieces=S.pieces.filter(p=>D.cards[p.k]);render();toast('Geladen')}
+ else if(d.ldel!=null){if(confirm('Look „'+S.looks[+d.ldel].n+'“ löschen?')){S.looks.splice(+d.ldel,1);render()}}
+ else if(d.more){const r=refObj(d.more);r.open=!r.open;render()}
+ else if(d.chip){const [ref,x]=d.chip.split('|');openChip(ref,x)}
+ else if(d.proll){checkpoint();roll(S.pieces.find(p=>p.id===d.proll));changed()}
+ else if(d.plock){const p=S.pieces.find(p=>p.id===d.plock);p.locked=!p.locked;render()}
+ else if(d.pdel){checkpoint();S.pieces=S.pieces.filter(p=>p.id!==d.pdel);changed()}
+ else if(d.add){checkpoint();S.pieces.push(newPiece(d.add));$('addbox').open=false;changed()}
+ else if(d.start){restart(d.start.split(','))}
+ else if(d.depth!=null){checkpoint();S.depth=+d.depth;S.pieces.forEach(p=>roll(p,true));changed()}
+ else if(d.mode){S.mode=d.mode;changed()}
+});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset.fon){const r=S[t.dataset.fon];r.on=t.checked;if(r.on&&!r.a.cat){r.k=t.dataset.fon;roll(r)}changed()}
+ else if(t.id==='harmony'){S.harmony=t.checked;save()}
+ else if(t.id==='style'){checkpoint();S.style=t.value;S.pieces.forEach(p=>roll(p));changed()}
+ else if(t.id==='photo'||t.id==='framing'){S[t.id]=t.value;changed()}
+});
+$('person').addEventListener('input',e=>{S.person=e.target.value;S.text=null;renderPrompt();renderFrame();save()});
+$('out').addEventListener('input',e=>{S.text=e.target.value;$('editnote').hidden=false;$('editedflag').textContent='bearbeitet';save()});
+document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select'))return;if(e.key===' '||e.key==='r'){e.preventDefault();rollAll()}if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();document.querySelector('[data-act=undo]').click()}});
+
+/* Start */
+S.scene.k='scene';S.light.k='light';
+if(!S.pieces.length)S.pieces=['top','bottom','shoes'].map(newPiece);
+render();
+</script>
+</body>
+</html>
